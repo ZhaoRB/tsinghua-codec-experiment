@@ -9,7 +9,9 @@ output_file = "path_to_your_frames_directory/output.yuv"
 # 调用 ffmpeg 直接进行转换
 subprocess.run([
     "ffmpeg",
+    "start_number", "0",
     "-i", input_pattern,
+    "-frames:v", "300",
     "-pix_fmt", "yuv420p",
     output_file
 ])
