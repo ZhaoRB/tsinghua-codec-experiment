@@ -1,0 +1,10 @@
+Calibration_xml    ./cfg/new-sequence/tlct.xml
+
+
+RawImage_Path      ./data/shot-new-seq/Image%03d.bmp
+Output_Path        ./data/shot-new-seq/frame#%03d
+
+
+D:\Tsinghua\Codec-Data\lvc-test-sequences-images\TSPC\Boys
+
+/mnt/d/Tsinghua/Codec-Data/lvc-test-sequence-images/TSPC/Boys
