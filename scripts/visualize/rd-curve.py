@@ -3,28 +3,32 @@ import os
 
 import matplotlib.pyplot as plt
 
-input_folder = "../../data/find-qp/csv"
-output_folder = "../../data/find-qp/figure"
+input_folder = "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment/data/find-qp/csv"
+output_folder = "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment/data/find-qp/figure"
 # sequence_names = ["fujita", "origami", "motherboard"]
-sequence_names = ["boys-147-anchor"]
+sequence_names = ["motherboard"]
 
-qps_to_plot = [20, 24, 28, 32, 36, 40, 44, 48]
+# qps_to_plot = [26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50]
+qps_to_plot = [32, 36, 40, 44]
+# qps_to_plot = [30, 34, 38, 42]
+qps_to_plot = [36, 40, 44, 48]
+
 
 def qpsToString(qpsArr):
     return "_".join(map(str, qpsArr))
-    
+
 
 for seq_name in sequence_names:
     input_path = os.path.join(input_folder, f"{seq_name}.csv")
-    output_path_png = os.path.join(output_folder, f"{seq_name}.png")
-    output_path_svg = os.path.join(output_folder, f"{seq_name}.svg")
+    output_path_png = os.path.join(output_folder, f"{seq_name}_{qpsToString(qps_to_plot)}.png")
+    # output_path_svg = os.path.join(output_folder, f"{seq_name}.svg")
 
     bitrates = []
     mvpsnr_y_values = []
 
     with open(input_path, "r") as f:
         csv_data = csv.reader(f)
-        print(csv_data, "\n", type(csv_data))
+        # print(csv_data, "\n", type(csv_data))
         header = next(csv_data)  # Skip header
 
         for row in csv_data:
@@ -44,5 +48,5 @@ for seq_name in sequence_names:
         plt.title(f"{seq_name}")
         plt.grid(True)
         plt.savefig(output_path_png)
-        plt.savefig(output_path_svg)
+        # plt.savefig(output_path_svg)
         plt.close()
