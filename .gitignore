@@ -1,7 +1,7 @@
 data/**
 
-!data/whiteImage
-!data/whiteImage/**
+!data/devignetting
+!data/devignetting/**
 
 !data/center
 !data/center/**
