@@ -1,5 +1,9 @@
 data/**
 
+!data/whiteImage
 !data/whiteImage/**
+
+!data/center
+!data/center/**
 
 .DS_Store
