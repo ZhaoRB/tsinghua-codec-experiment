@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 
 import cv2
+import numpy as np
 
 calibrationFilePath = (
     "/Users/riverzhao/Project/Codec/0_lvc_codec/Inter-MCA/config/new-seq/tlct.xml"
@@ -26,3 +27,25 @@ for point in points:
 
 output_path = "/Users/riverzhao/Project/Codec/0_lvc_codec/Inter-MCA/data/center/new-seq/three-points.png"
 cv2.imwrite(output_path, image)
+
+
+def drawCornerCenters(image: np.ndarray, ltop, rtop, lbot, rbot, diameter):
+
+
+
+# image_copy = image.copy()
+
+# for row in allCenterPoints:
+#     for point in row:
+#         center = (round(point[0]), round(point[1]))
+#         color = (0, 0, 255)
+#         cv2.circle(image_copy, center, diameter // 2, color, 2)
+
+# output_path = os.path.join(projectPath, "./data/center/all_center_cars.png")
+# cv2.imwrite(output_path, image_copy)
+
+# del image_copy
+
+
+if __name__ == "__main__":
+    pass
