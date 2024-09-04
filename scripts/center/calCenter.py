@@ -6,14 +6,6 @@ import cv2
 import numpy as np
 from dataStructure import CalibInfo
 
-projectPath = "/Users/riverzhao/Project/Codec/0_lvc_codec/Inter-MCA"
-
-calibrationFilePath = os.path.join(projectPath, "./config/calibration.xml")
-imageFilePath = os.path.join(projectPath, "./data/raw/cars.bmp")
-
-image = cv2.imread(imageFilePath)
-# print(image.shape, image.shape[1])
-
 
 def parseCalibXmlFile(calibrationFilePath) -> CalibInfo:
     tree = ET.parse(calibrationFilePath)
@@ -76,4 +68,17 @@ def calculateAllCenters(calibInfo: CalibInfo) -> np.ndarray:
     return allCenterPoints
 
 
-# np.save("centerPoints.npy", allCenterPoints)
+if __name__ == "__main__":
+    projectPath = "/Users/riverzhao/Project/Codec/0_lvc_codec/Inter-MCA"
+
+    calibrationFilePath = os.path.join(projectPath, "./config/calibration.xml")
+    imageFilePath = os.path.join(projectPath, "./data/raw/cars.bmp")
+
+    image = cv2.imread(imageFilePath)
+
+    calibInfo = parseCalibXmlFile(calibrationFilePath)
+    allCenterPoints = calculateAllCenters(calibInfo)
+
+    # print(image.shape, image.shape[1])
+
+    # np.save("centerPoints.npy", allCenterPoints)
