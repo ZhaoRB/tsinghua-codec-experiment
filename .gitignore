@@ -1,7 +1,8 @@
 data/**
 
 !data/devignetting
-!data/devignetting/**
+!data/devignetting/whiteImage
+!data/devignetting/whiteImage/**
 
 !data/center
 !data/center/**
