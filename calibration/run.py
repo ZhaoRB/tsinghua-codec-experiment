@@ -2,12 +2,13 @@ import os
 
 import cv2
 import numpy as np
-from center.cal_center import calculateAllCenters, parseCalibXmlFile
+from center.cal_center import calculateAllCenters
 from center.draw_center import drawAllCenters, drawCornerCenters
 from rotate.rotate import rotate
+from parse_xml.parse import parseCalibXmlFile
 
 
-def parseInputPath():
+def parseInputPath(inputPath):
     pass
 
 
