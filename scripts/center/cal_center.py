@@ -77,9 +77,7 @@ def calculateAllCenters(calibInfo: CalibInfo) -> np.ndarray:
 
 
 if __name__ == "__main__":
-    projectPath = (
-        "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment"
-    )
+    projectPath = "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment"
 
     calibrationFilePath = os.path.join(projectPath, "./cfg/test/tlct.xml")
     imageFilePath = os.path.join(projectPath, "./data/mini-garden/Image001.bmp")
