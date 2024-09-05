@@ -14,53 +14,26 @@ def rotate(
     image: np.ndarray,
     ltop: np.ndarray,
     rtop: np.ndarray,
-    diameter,
-    centerPoints: np.ndarray,
+    lbot: np.ndarray,
+    rbot: np.ndarray,
 ):
-    xBias = diameter / 2 * math.sqrt(3)
-    yBias = diameter / 2
-
-    ltopOdd = np.array([ltop[0] + xBias, ltop[1] + yBias])
-
-    vec = rtop - ltopOdd
-    print(f"ltop: {ltop}")
-    print(f"rtop: {rtop}")
-    print(f"ltopOdd: {ltopOdd}")
+    vec = rtop - ltop + rbot - lbot
     angle = math.degrees(math.atan2(vec[1], vec[0]))
 
-    print(f"vector: {vec} \nrotate angle: {angle}")
+    print(f"vector: {vec}, rotation angle: {angle}")
 
     (h, w) = image.shape[:2]
     imgCenter = (w // 2, h // 2)
 
     # rotate matrix
     M = cv2.getRotationMatrix2D(imgCenter, angle, 1.0)
-    print(f"rotate matrix shape: {M.shape}")
-    print(M[:, 0], M[:, 1], M[:, 2])
 
     rotated_image = cv2.warpAffine(image, M, (w, h))
     print(rotated_image.shape)
 
     # rotate center points
-    m, n, _ = centerPoints.shape
-    points_reshaped = centerPoints.reshape(-1, 2)
 
-    ones = np.ones((points_reshaped.shape[0], 1))
-    points_homogeneous = np.hstack((points_reshaped, ones))
-
-    rotated_points_homogeneous = M @ points_homogeneous.T
-    rotated_points = rotated_points_homogeneous[:2, :].T
-
-    rotated_points_reshaped = rotated_points.reshape(m, n, 2)
-
-    print(f"rotated right ltop: {rotated_points_reshaped[0, 0, :]}")
-    print(f"rotated right rtop: {rotated_points_reshaped[0, n - 1, :]}")
-
-    print(
-        f"four points: {rotated_points_reshaped[0, 0, :]}, {rotated_points_reshaped[0, n-2, :]}, {rotated_points_reshaped[m-1, 0, :]}, {rotated_points_reshaped[m-1, n-2, :]}"
-    )
-
-    return rotated_image, rotated_points_reshaped
+    return rotated_image
 
 
 if __name__ == "__main__":

@@ -1,11 +1,13 @@
 data/**
 
-!data/devignetting
-!data/devignetting/whiteImage
-!data/devignetting/whiteImage/**
+!data/whiteImage
+!data/whiteImage/**
 
 !data/center
 !data/center/**
+
+!data/sample
+!data/sample/**
 
 cfg/lvccc-config
 
