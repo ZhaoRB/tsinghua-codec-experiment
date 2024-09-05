@@ -7,4 +7,6 @@ data/**
 !data/center
 !data/center/**
 
+cfg/lvccc-config
+
 .DS_Store
