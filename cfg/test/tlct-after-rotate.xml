@@ -5,16 +5,20 @@
     <rows>43</rows>
     <cols>66</cols>
     <ltop>
-      <x>45.25</x>
-      <y>37.5</y>
+      <x>44.77</x>
+      <y>38.14</y>
     </ltop>
     <rtop>
-      <x>4006.75</x>
-      <y>71.75</y>
+      <x>3945.65</x>
+      <y>38.14</y>
     </rtop>
     <lbot>
-      <x>44.25</x>
-      <y>2996.75</y>
+      <x>44.72</x>
+      <y>2997.4</y>
     </lbot>
+    <rbot>
+      <x>3945.6</x>
+      <y>2997.4</y>
+    </rbot>
   </centers>
 </TSPCCalibData>
