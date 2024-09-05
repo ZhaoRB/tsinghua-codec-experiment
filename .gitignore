@@ -10,3 +10,5 @@ data/**
 cfg/lvccc-config
 
 .DS_Store
+
+__pycache__

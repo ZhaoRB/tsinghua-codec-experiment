@@ -4,11 +4,19 @@ import cv2
 import numpy as np
 
 
-def drawCornerCenters(image: np.ndarray, ltop, rtop, lbot, rbot, diameter, outputPath):
+def drawCornerCenters(
+    image: np.ndarray,
+    ltop: np.ndarray,
+    rtop: np.ndarray,
+    lbot: np.ndarray,
+    rbot: np.ndarray,
+    diameter,
+    outputPath,
+):
     image_copy = image.copy()
 
     for point in [ltop, rtop, lbot, rbot]:
-        if not point:
+        if point.shape[0] == 0:
             continue
         center = (round(point[0]), round(point[1]))
         color = (0, 0, 255)
@@ -16,7 +24,7 @@ def drawCornerCenters(image: np.ndarray, ltop, rtop, lbot, rbot, diameter, outpu
 
     cv2.imwrite(outputPath, image_copy)
 
-    del image_copy
+    return image_copy
 
 
 def drawAllCenters(
@@ -32,7 +40,7 @@ def drawAllCenters(
 
     cv2.imwrite(outputPath, image_copy)
 
-    del image_copy
+    return image_copy
 
 
 if __name__ == "__main__":
