@@ -4,7 +4,7 @@ import xml.etree.ElementTree as ET
 
 import cv2
 import numpy as np
-from dataStructure import CalibInfo
+from scripts.center.data_structure import CalibInfo
 
 
 def parseCalibXmlFile(calibrationFilePath) -> CalibInfo:
