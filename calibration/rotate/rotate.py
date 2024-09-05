@@ -17,7 +17,16 @@ def rotate(
     lbot: np.ndarray,
     rbot: np.ndarray,
 ):
-    vec = rtop - ltop + rbot - lbot
+    vec1 = rtop - ltop + rbot - lbot
+    vec1 = vec1 / np.linalg.norm(vec1)
+
+    vec2 = lbot - ltop + rbot - rtop
+    vec2 = vec2 / np.linalg.norm(vec2)
+    # rotate90 = np.array([[0, 1], [-1, 0]])
+    # vec2 = vec2 @ rotate90
+
+    vec = vec1 + vec2
+
     angle = math.degrees(math.atan2(vec[1], vec[0]))
 
     print(f"vector: {vec}, rotation angle: {angle}")
@@ -38,13 +47,13 @@ def rotate(
 
 if __name__ == "__main__":
     img = cv2.imread(
-        "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment/data/mini-garden/Image001.bmp"
+        "/home/zrb/project/tsinghua-codec-experiment/data/sample/MiniGarden.png"
     )
     ltop = np.array([45.25, 37.5])
     rtop = np.array([4006.75, 70.75])
     diameter = 70
 
-    rotatedImage = rotate(img, ltop, rtop, diameter)
+    rotatedImage = rotate(img, ltop, rtop)
 
     cv2.imwrite(
         "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment/data/rotate/rotate-garden.bmp",
