@@ -56,6 +56,10 @@ def rotate(
     print(f"rotated right ltop: {rotated_points_reshaped[0, 0, :]}")
     print(f"rotated right rtop: {rotated_points_reshaped[0, n - 1, :]}")
 
+    print(
+        f"four points: {rotated_points_reshaped[0, 0, :]}, {rotated_points_reshaped[0, n-2, :]}, {rotated_points_reshaped[m-1, 0, :]}, {rotated_points_reshaped[m-1, n-2, :]}"
+    )
+
     return rotated_image, rotated_points_reshaped
 
 
