@@ -33,33 +33,40 @@ def calculateAllCentersOld(calibInfo: data_structure.CalibInfo) -> np.ndarray:
 
 # calculate all center points from four points
 def calculateAllCenters(calibInfo: data_structure.CalibInfo) -> np.ndarray:
-    allCenterPoints = np.zeros((calibInfo.rowNum, calibInfo.colNum, 2))
+    ltop, rtop, lbot, rbot, colNum, rowNum = (
+        calibInfo.ltop,
+        calibInfo.rtop,
+        calibInfo.lbot,
+        calibInfo.rbot,
+        calibInfo.colNum,
+        calibInfo.rowNum,
+    )
 
-    xBias = calibInfo.diameter / 2 * math.sqrt(3)
-    yBias = calibInfo.diameter / 2
+    allCenterPoints = np.zeros((rowNum, colNum, 2))
 
-    ltopOdd = np.array([calibInfo.ltop[0] + xBias, calibInfo.ltop[1] + yBias])
+    # colNum - 2: one column on the right of rtop: -1, distance -1
+    distance_col = (rtop - ltop) / (colNum - 2)
+    bias_col = ((lbot - ltop) - (rbot - rtop)) / (colNum - 2)
 
-    colGap = (calibInfo.rtop - ltopOdd) / (calibInfo.colNum / 2 - 1)
-    rowGap = (calibInfo.lbot - calibInfo.ltop) / (calibInfo.rowNum - 1)
+    for col in range(colNum):
+        distance_row = (lbot - ltop + col * bias_col) / (rowNum - 1)
 
-    allCenterPoints[0, 0, :] = calibInfo.ltop
-    allCenterPoints[0, 1, :] = ltopOdd
-
-    for i in range(int(calibInfo.colNum - 2)):
-        allCenterPoints[0, i + 2, :] = allCenterPoints[0, i, :] + colGap
-
-    for r in range(int(calibInfo.rowNum - 1)):
-        for c in range(int(calibInfo.colNum)):
-            allCenterPoints[r + 1, c, :] = allCenterPoints[r, c, :] + rowGap
+        firstPoint = ltop + distance_col * col
+        if col % 2 == 1:
+            firstPoint = firstPoint + distance_row / 2
+        allCenterPoints[0, col] = firstPoint
+        
+        for row in range(rowNum - 1):
+            cur = row + 1
+            allCenterPoints[cur, col] = allCenterPoints[cur - 1, col] + distance_row
 
     return allCenterPoints
 
+        
+
 
 if __name__ == "__main__":
-    projectPath = (
-        "/home/zrb/project/tsinghua-codec-experiment"
-    )
+    projectPath = "/home/zrb/project/tsinghua-codec-experiment"
 
     calibrationFilePath = os.path.join(projectPath, "./cfg/test/tlct.xml")
     imageFilePath = os.path.join(projectPath, "./data/mini-garden/Image001.bmp")
