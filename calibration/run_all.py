@@ -15,10 +15,16 @@ nameMap = {
     "minigarden": "MiniGarden",
     "motherboard": "Motherboard",
 }
-name = ["minigarden"]
+name = "minigarden"
 calibrationFilePath = os.path.join(projectPath, f"./cfg/test/{name}.xml")
 input_folder = f"/data/ZRB/sequences/{nameMap[name]}"
-output_folder = os.path.join(projectPath, f"")
+
+# output folder path
+devignettingFolder = os.path.join(projectPath, f"/data/ZRB/sequences/devignetting_{nameMap[name]}")
+rotateFolder = os.path.join(projectPath, f"/data/ZRB/sequences/rotate_{nameMap[name]}")
+fixColorFolder = os.path.join(projectPath, f"/data/ZRB/sequences/fix_color_{nameMap[name]}")
+
+output_folder = devignettingFolder
 
 
 # 2. parse calibration file and calulate center points

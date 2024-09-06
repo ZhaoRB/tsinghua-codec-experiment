@@ -6,7 +6,7 @@ import numpy as np
 from parse_xml import data_structure, parse
 
 
-# calculate all center points from three points
+# calculate all center points from three points (calibration file old version)
 def calculateAllCentersOld(calibInfo: data_structure.CalibInfo) -> np.ndarray:
     allCenterPoints = np.zeros((calibInfo.rowNum, calibInfo.colNum, 2))
 
@@ -31,6 +31,7 @@ def calculateAllCentersOld(calibInfo: data_structure.CalibInfo) -> np.ndarray:
     return allCenterPoints
 
 
+# calculate all center points from four points
 def calculateAllCenters(calibInfo: data_structure.CalibInfo) -> np.ndarray:
     allCenterPoints = np.zeros((calibInfo.rowNum, calibInfo.colNum, 2))
 
