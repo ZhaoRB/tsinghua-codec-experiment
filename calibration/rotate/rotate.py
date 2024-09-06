@@ -43,19 +43,3 @@ def rotate(
     # rotate center points
 
     return rotated_image
-
-
-if __name__ == "__main__":
-    img = cv2.imread(
-        "/home/zrb/project/tsinghua-codec-experiment/data/sample/MiniGarden.png"
-    )
-    ltop = np.array([45.25, 37.5])
-    rtop = np.array([4006.75, 70.75])
-    diameter = 70
-
-    rotatedImage = rotate(img, ltop, rtop)
-
-    cv2.imwrite(
-        "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment/data/rotate/rotate-garden.bmp",
-        rotatedImage,
-    )

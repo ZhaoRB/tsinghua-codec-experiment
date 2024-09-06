@@ -15,14 +15,3 @@ def drawCenters(image: np.ndarray, points: np.ndarray, diameter, outputPath):
 
     cv2.imwrite(outputPath, image)
 
-
-if __name__ == "__main__":
-    calibrationFilePath = (
-        "/Users/riverzhao/Project/Codec/0_lvc_codec/Inter-MCA/config/new-seq/tlct.xml"
-    )
-    imageFilePath = (
-        "/Users/riverzhao/Project/Codec/0_lvc_codec/Inter-MCA/data/raw/miniGarden.bmp"
-    )
-
-    image = cv2.imread(imageFilePath)
-    output_path = "/Users/riverzhao/Project/Codec/0_lvc_codec/Inter-MCA/data/center/new-seq/three-points.png"

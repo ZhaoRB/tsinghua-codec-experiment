@@ -38,6 +38,7 @@ allCenterPoints = calculateAllCenters(calibInfo)
 
 # 3. process
 
+
 # 4. draw
 drawCenters(
     image,

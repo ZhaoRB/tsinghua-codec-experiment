@@ -62,17 +62,3 @@ def calculateAllCenters(calibInfo: data_structure.CalibInfo) -> np.ndarray:
             allCenterPoints[cur, col] = allCenterPoints[cur - 1, col] + distance_row
 
     return allCenterPoints
-
-        
-
-
-if __name__ == "__main__":
-    projectPath = "/home/zrb/project/tsinghua-codec-experiment"
-
-    calibrationFilePath = os.path.join(projectPath, "./cfg/test/tlct.xml")
-    imageFilePath = os.path.join(projectPath, "./data/mini-garden/Image001.bmp")
-
-    image = cv2.imread(imageFilePath)
-
-    calibInfo = parse.parseCalibXmlFile(calibrationFilePath)
-    allCenterPoints = calculateAllCenters(calibInfo)
