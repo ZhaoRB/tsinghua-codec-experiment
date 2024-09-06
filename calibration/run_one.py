@@ -8,7 +8,7 @@ from parse_xml.parse import parseCalibXmlFile
 from rotate.rotate import rotate
 
 # 1. set path
-projectPath = "/home/zrb/project/tsinghua-codec-experiment"
+projectPath = "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment"
 nameMap = {
     "boys": "Boys_fix_color",
     "minigarden": "MiniGarden",

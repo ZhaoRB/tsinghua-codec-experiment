@@ -46,10 +46,11 @@ def calculateAllCenters(calibInfo: data_structure.CalibInfo) -> np.ndarray:
 
     # colNum - 2: one column on the right of rtop: -1, distance -1
     distance_col = (rtop - ltop) / (colNum - 2)
-    bias_col = ((lbot - ltop) - (rbot - rtop)) / (colNum - 2)
 
     for col in range(colNum):
-        distance_row = (lbot - ltop + col * bias_col) / (rowNum - 1)
+        ratioL = (colNum - 1 - col) / (colNum - 1)
+        ratioR = col / (colNum - 1)
+        distance_row = (ratioL * (lbot - ltop) + ratioR * (rbot - rtop)) / (rowNum - 1)
 
         firstPoint = ltop + distance_col * col
         if col % 2 == 1:
