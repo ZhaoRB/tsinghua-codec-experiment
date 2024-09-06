@@ -5,10 +5,11 @@ import numpy as np
 from center.cal_center import calculateAllCenters
 from center.draw_center import drawCenters
 from parse_xml.parse import parseCalibXmlFile
+from devignetting.devignetting import devignetting, getVignettingMatrix, drawHeatMap, getVignettingMatrixNew
 from rotate.rotate import rotate
 
-# 1. set path
-projectPath = "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment"
+# - set path
+projectPath = "/home/zrb/project/tsinghua-codec-experiment"
 nameMap = {
     "boys": "Boys_fix_color",
     "minigarden": "MiniGarden",
@@ -30,26 +31,51 @@ rotatePath = os.path.join(projectPath, f"./data/rotate/{nameMap[name]}.png")
 fixColorPath = os.path.join(projectPath, f"./data/fix-color/{nameMap[name]}.png")
 
 
-# 2. parse calibration file and calulate center points
+# - parse calibration file and calulate center points
 calibInfo = parseCalibXmlFile(calibrationFilePath)
 print(calibInfo)
 
 allCenterPoints = calculateAllCenters(calibInfo)
 
-# 3. process
-
-
-# 4. draw
+# - draw
 drawCenters(
-    image,
+    image.copy(),
     np.array([calibInfo.ltop, calibInfo.rtop, calibInfo.lbot, calibInfo.rbot]),
     calibInfo.diameter,
     cornerCenterPath,
 )
 
 drawCenters(
-    image,
+    image.copy(),
     allCenterPoints.reshape(allCenterPoints.shape[0] * allCenterPoints.shape[1], 2),
     calibInfo.diameter,
     allCenterPath,
 )
+
+# - draw white image centers
+whiteImageName = "0.2m"
+whiteImage = cv2.imread(os.path.join(projectPath, f"./data/whiteImage/{whiteImageName}.bmp"))
+whiteCornerCenterPath = os.path.join(projectPath, f"./data/corner-center/{whiteImageName}.png")
+whiteAllCenterPath = os.path.join(projectPath, f"./data/all-center/{whiteImageName}.png")
+
+drawCenters(
+    whiteImage.copy(),
+    np.array([calibInfo.ltop, calibInfo.rtop, calibInfo.lbot, calibInfo.rbot]),
+    calibInfo.diameter,
+    whiteCornerCenterPath,
+)
+
+drawCenters(
+    whiteImage.copy(),
+    allCenterPoints.reshape(allCenterPoints.shape[0] * allCenterPoints.shape[1], 2),
+    calibInfo.diameter,
+    whiteAllCenterPath,
+)
+
+# - devignetting
+heatMapPath = os.path.join(projectPath, f"./data/devignetting/heat_{whiteImageName}.png")
+
+vignettingMatrix = getVignettingMatrixNew(whiteImage, allCenterPoints, calibInfo.diameter // 2)
+drawHeatMap(vignettingMatrix, heatMapPath, True)
+
+devignetting(image, vignettingMatrix, devignettingPath)
