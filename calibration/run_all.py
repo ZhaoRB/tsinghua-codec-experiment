@@ -42,7 +42,7 @@ vignettingMatrix = getVignettingMatrixNew(whiteImage, allCenterPoints, calibInfo
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
-for i in range(301):  # 遍历 image000.bmp 到 image299.bmp
+for i in range(301):  # 遍历 image000.bmp 到 image300.bmp
     image_name = f"Image{i:03d}.bmp"
     input_path = os.path.join(input_folder, image_name)
 
