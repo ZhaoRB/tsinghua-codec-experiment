@@ -4,8 +4,13 @@ import cv2
 import numpy as np
 from center.cal_center import calculateAllCenters
 from center.draw_center import drawCenters
+from devignetting.devignetting import (
+    devignetting,
+    drawHeatMap,
+    getVignettingMatrix,
+    getVignettingMatrixNew,
+)
 from parse_xml.parse import parseCalibXmlFile
-from devignetting.devignetting import devignetting, getVignettingMatrix, drawHeatMap, getVignettingMatrixNew
 from rotate.rotate import rotate
 
 # - set path
@@ -15,7 +20,7 @@ nameMap = {
     "minigarden": "MiniGarden",
     "motherboard": "Motherboard",
 }
-name = "minigarden"
+name = "motherboard"
 
 calibrationFilePath = os.path.join(projectPath, f"./cfg/test/{name}.xml")
 inputPath = os.path.join(projectPath, f"./data/sample/{nameMap[name]}.png")
@@ -54,9 +59,15 @@ drawCenters(
 
 # - draw white image centers
 whiteImageName = "0.2m"
-whiteImage = cv2.imread(os.path.join(projectPath, f"./data/whiteImage/{whiteImageName}.bmp"))
-whiteCornerCenterPath = os.path.join(projectPath, f"./data/corner-center/{whiteImageName}.png")
-whiteAllCenterPath = os.path.join(projectPath, f"./data/all-center/{whiteImageName}.png")
+whiteImage = cv2.imread(
+    os.path.join(projectPath, f"./data/whiteImage/{whiteImageName}.bmp")
+)
+whiteCornerCenterPath = os.path.join(
+    projectPath, f"./data/corner-center/{whiteImageName}_{name}.png"
+)
+whiteAllCenterPath = os.path.join(
+    projectPath, f"./data/all-center/{whiteImageName}_{name}.png"
+)
 
 drawCenters(
     whiteImage.copy(),
@@ -73,9 +84,13 @@ drawCenters(
 )
 
 # - devignetting
-heatMapPath = os.path.join(projectPath, f"./data/devignetting/heat_{whiteImageName}.png")
+heatMapPath = os.path.join(
+    projectPath, f"./data/devignetting/heat_{whiteImageName}_{name}.png"
+)
 
-vignettingMatrix = getVignettingMatrixNew(whiteImage, allCenterPoints, calibInfo.diameter // 2)
+vignettingMatrix = getVignettingMatrixNew(
+    whiteImage, allCenterPoints, calibInfo.diameter // 2
+)
 drawHeatMap(vignettingMatrix, heatMapPath, True)
 
 devignetting(image, vignettingMatrix, devignettingPath)
