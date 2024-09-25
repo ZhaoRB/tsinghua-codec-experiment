@@ -3,13 +3,6 @@ import os
 import cv2
 import numpy as np
 from center.cal_center import calculateAllCenters
-from center.draw_center import drawCenters
-from devignetting.devignetting import (
-    devignetting,
-    drawHeatMap,
-    getVignettingMatrix,
-    getVignettingMatrixNew,
-)
 from parse_xml.parse import parseCalibXmlFile
 from rotate.rotate import rotate
 
@@ -17,22 +10,13 @@ from rotate.rotate import rotate
 projectPath = "/home/zrb/project/tsinghua-codec-experiment"
 dataBaseFolder = "/data/ZRB/0913-seq"
 dataFolderName = "0913_5000_02mm"
+calibFileName = "minigarden"
 
 
-calibrationFilePath = os.path.join(projectPath, f"./cfg/test/minigarden.xml")
+calibrationFilePath = os.path.join(projectPath, f"./cfg/test/{calibFileName}.xml")
 input_folder = f"{dataBaseFolder}/{dataFolderName}"
 
-# output folder path
-devignettingFolder = os.path.join(
-    projectPath, f"{dataBaseFolder}/devignetting_{dataFolderName}"
-)
 rotateFolder = os.path.join(projectPath, f"{dataBaseFolder}/rotate_{dataFolderName}")
-fixColorFolder = os.path.join(
-    projectPath, f"{dataBaseFolder}/fix_color_{dataFolderName}"
-)
-
-output_folder = devignettingFolder
-
 
 # 2. parse calibration file and calulate center points
 calibInfo = parseCalibXmlFile(calibrationFilePath)
@@ -40,17 +24,9 @@ print(calibInfo)
 
 allCenterPoints = calculateAllCenters(calibInfo)
 
-# 3. process: rotate, devignetting or fix color
-# whiteImageName = "0.2m"
-# whiteImage = cv2.imread(
-#     os.path.join(projectPath, f"./data/whiteImage/{whiteImageName}.bmp")
-# )
-# vignettingMatrix = getVignettingMatrixNew(
-#     whiteImage, allCenterPoints, calibInfo.diameter // 2
-# )
 
-if not os.path.exists(output_folder):
-    os.makedirs(output_folder)
+if not os.path.exists(rotateFolder):
+    os.makedirs(rotateFolder)
 
 for i in range(301):  # 遍历 image000.bmp 到 image300.bmp
     image_name = f"Image{i:03d}.bmp"
@@ -60,9 +36,9 @@ for i in range(301):  # 遍历 image000.bmp 到 image300.bmp
         raw_image = cv2.imread(input_path)
 
         # - process and save
-        output_name = f"Image{i:03d}.png"
-        output_path = os.path.join(output_folder, output_name)
-        # devignetting(raw_image, vignettingMatrix, output_path)
+        output_name = f"Image{i:03d}.bmp"
+        output_path = os.path.join(rotateFolder, output_name)
+        
         rotatedImage = rotate(raw_image, calibInfo.ltop, calibInfo.rtop, calibInfo.lbot, calibInfo.rbot)
         cv2.imwrite(output_path, rotatedImage)
 

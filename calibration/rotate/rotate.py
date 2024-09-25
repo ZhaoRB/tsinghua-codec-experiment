@@ -22,10 +22,11 @@ def rotate(
 
     vec2 = lbot - ltop + rbot - rtop
     vec2 = vec2 / np.linalg.norm(vec2)
-    # rotate90 = np.array([[0, 1], [-1, 0]])
-    # vec2 = vec2 @ rotate90
+    rotate90 = np.array([[0, 1], [-1, 0]])
+    vec2 = vec2 @ rotate90
 
-    vec = vec1 + vec2
+    # vec = vec1 + vec2
+    vec = vec1
 
     angle = math.degrees(math.atan2(vec[1], vec[0]))
 
