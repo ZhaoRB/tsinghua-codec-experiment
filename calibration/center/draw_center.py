@@ -15,3 +15,5 @@ def drawCenters(image: np.ndarray, points: np.ndarray, diameter, outputPath):
 
     cv2.imwrite(outputPath, image)
 
+    return image
+
