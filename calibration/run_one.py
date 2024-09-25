@@ -11,7 +11,7 @@ from devignetting.devignetting import (
     getVignettingMatrixNew,
 )
 from parse_xml.parse import parseCalibXmlFile
-from rotate.rotate import rotate
+from rotateAndCrop.rotate import rotate
 
 # - set path
 projectPath = "/home/zrb/project/tsinghua-codec-experiment"

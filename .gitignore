@@ -16,3 +16,5 @@ cfg/lvccc-config
 __pycache__
 
 .venv
+
+sample

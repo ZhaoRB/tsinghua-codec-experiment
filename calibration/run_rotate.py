@@ -4,7 +4,7 @@ import cv2
 import numpy as np
 from center.cal_center import calculateAllCenters
 from parse_xml.parse import parseCalibXmlFile
-from rotate.rotate import rotate
+from rotateAndCrop.rotate import rotate
 
 # 1. set paths
 projectPath = "/home/zrb/project/tsinghua-codec-experiment"
