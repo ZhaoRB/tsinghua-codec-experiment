@@ -32,6 +32,24 @@ def parseCalibXmlFile(calibrationFilePath) -> CalibInfo:
 
     return CalibInfo(diameter, rowNum, colNum, ltop, rtop, lbot, rbot)
 
+def updateCalibInfo(ltop, rtop, lbot, rbot, oldPath, newPath):
+    def update_node(x, y, node_name):
+        node = centersNode.find(node_name)
+        node.find("x").text = str(round(x, 1))
+        node.find("y").text = str(round(y, 1))
+    
+    tree = ET.parse(oldPath)
+    root = tree.getroot()
+
+    centersNode = root.find("centers")
+
+    update_node(ltop[0], ltop[1], "ltop")
+    update_node(rtop[0], rtop[1], "rtop")
+    update_node(lbot[0], lbot[1], "lbot")
+    update_node(rbot[0], rbot[1], "rbot")
+
+    tree.write(newPath)
+
 
 # old version: three points xml file
 def parseCalibXmlFileOld(calibrationFilePath) -> CalibInfo:

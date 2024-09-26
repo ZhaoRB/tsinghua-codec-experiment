@@ -5,7 +5,7 @@ import numpy as np
 from center.cal_center import calculateAllCenters
 from center.draw_center import drawCenters
 from parse_xml.parse import parseCalibXmlFile
-from rotate.rotate import rotate
+from rotateAndCrop.rotate import rotate
 
 # 1. set path
 projectPath = "/Users/riverzhao/Project/Codec/3_experiment/tsinghua-codec-experiment"
