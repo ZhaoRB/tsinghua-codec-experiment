@@ -34,6 +34,6 @@ def crop(image, ltopX, ltopY, rbotX, rbotY):
     if (rbotX - ltopX) % 2 == 1:
         rbotX = rbotX + 1
     if (rbotY - ltopY) % 2 == 1:
-        rbotY = rbotY + 1
+        rbotY = rbotY - 1
     cropped_image = image[ltopY:rbotY, ltopX:rbotX]
     return cropped_image
