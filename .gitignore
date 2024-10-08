@@ -1,6 +1,4 @@
-data/**
-
-cfg/lvccc-config
+data/
 
 .DS_Store
 
