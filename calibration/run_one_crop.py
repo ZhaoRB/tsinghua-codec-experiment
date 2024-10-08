@@ -1,54 +1,64 @@
-import math
-import os
-
 import cv2
-import numpy as np
 from center.cal_center import calculateAllCenters
 from center.draw_center import drawCenters
-from parse_xml.parse import parseCalibXmlFile
+from parse_xml.parse import parseCalibXmlFile, updateCalibInfo
+from rotateAndCrop.crop import calCropPos, crop
 
 # - set path
-projectPath = "/home/zrb/project/tsinghua-codec-experiment"
-nameMap = {
-    "boys": "Boys_fix_color",
-    "minigarden": "newMiniGarden",
-    "motherboard": "Motherboard",
-}
-name = "minigarden"
+calibFolder = "/home/zrb/project/tsinghua-codec-experiment/cfg/1007"
+imageFolder = "/home/zrb/project/tsinghua-codec-experiment/data/1007"
+seqName = "Motherboard"
 
-calibrationFilePath = os.path.join(projectPath, f"./cfg/test/{name}.xml")
-inputPath = os.path.join(projectPath, f"./data/sample/{nameMap[name]}.bmp")
-image = cv2.imread(inputPath)
-
-# output path
-cornerCenterPath = os.path.join(
-    projectPath, f"./data/corner-center/{nameMap[name]}.png"
-)
-allCenterPath = os.path.join(projectPath, f"./data/all-center/{nameMap[name]}.png")
-cropPath = os.path.join(projectPath, f"./data/crop/{nameMap[name]}.png")
-
+image = cv2.imread(f"{imageFolder}/{seqName}.bmp")
 
 # - parse calibration file and calulate center points
+calibrationFilePath = f"{calibFolder}/{seqName}.xml"
 calibInfo = parseCalibXmlFile(calibrationFilePath)
-print(calibInfo)
-
 allCenterPoints = calculateAllCenters(calibInfo)
 
 # - draw
 drawCenters(
     image.copy(),
-    np.array([calibInfo.ltop, calibInfo.rtop, calibInfo.lbot, calibInfo.rbot]),
-    calibInfo.diameter,
-    cornerCenterPath,
-)
-
-drawCenters(
-    image.copy(),
     allCenterPoints.reshape(allCenterPoints.shape[0] * allCenterPoints.shape[1], 2),
     calibInfo.diameter,
-    allCenterPath,
+    f"{imageFolder}/center_{seqName}.png",
 )
+
+# - calculate crop params, update calibration file
+ltop = calibInfo.ltop
+rtop = calibInfo.rtop
+lbot = calibInfo.lbot
+rbot = calibInfo.rbot
+
+ltopX, ltopY, rbotX, rbotY = calCropPos(
+    ltop, lbot, rtop, rbot, calibInfo.diameter, False
+)
+
+# update calibration file
+ltop[0] = ltop[0] - ltopX
+rtop[0] = rtop[0] - ltopX
+lbot[0] = lbot[0] - ltopX
+rbot[0] = rbot[0] - ltopX
+
+ltop[1] = ltop[1] - ltopY
+rtop[1] = rtop[1] - ltopY
+lbot[1] = lbot[1] - ltopY
+rbot[1] = rbot[1] - ltopY
+
+newCalibPath = f"{calibFolder}/cropped_{seqName}.xml"
+updateCalibInfo(ltop, rtop, lbot, rbot, calibrationFilePath, newCalibPath)
+
+calibInfo = parseCalibXmlFile(newCalibPath)
+allCenterPoints = calculateAllCenters(calibInfo)
 
 # - crop
 
+croppedImage = crop(image, ltopX, ltopY, rbotX, rbotY)
+cv2.imwrite(f"{imageFolder}/cropped_{seqName}.png", croppedImage)
 
+drawCenters(
+    croppedImage.copy(),
+    allCenterPoints.reshape(allCenterPoints.shape[0] * allCenterPoints.shape[1], 2),
+    calibInfo.diameter,
+    f"{imageFolder}/center_cropped_{seqName}.png",
+)

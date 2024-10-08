@@ -31,9 +31,9 @@ def calCropPos(ltop, lbot, rtop, rbot, diameter, isBoys: bool):
 
 
 def crop(image, ltopX, ltopY, rbotX, rbotY):
-    if (rbotX - ltopX) % 2 == 1:
-        rbotX = rbotX + 1
-    if (rbotY - ltopY) % 2 == 1:
-        rbotY = rbotY + 1
+    if (rbotX - ltopX) % 4 != 0:
+        rbotX = ltopX + math.ceil((rbotX - ltopX) / 4) * 4
+    if (rbotY - ltopY) % 4 != 0:
+        rbotY = ltopY + math.ceil((rbotY - ltopY) / 4) * 4
     cropped_image = image[ltopY:rbotY, ltopX:rbotX]
     return cropped_image

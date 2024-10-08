@@ -20,9 +20,8 @@ if __name__ == "__main__":
     seqName = args.seqName
 
     # - parse calibration file and calulate center points
-    calibrationFilePath = f"{projectPath}/cfg/1003/{name}.xml"
+    calibrationFilePath = f"{projectPath}/cfg/1007/{name}.xml"
     calibInfo = parseCalibXmlFile(calibrationFilePath)
-    print(calibInfo)
 
     # - calculate crop params, update calibration file
     ltop = calibInfo.ltop
@@ -45,17 +44,17 @@ if __name__ == "__main__":
     lbot[1] = lbot[1] - ltopY
     rbot[1] = rbot[1] - ltopY
 
-    newCalibPath = f"{projectPath}/cfg/1003/cropped_{name}.xml"
+    newCalibPath = f"{projectPath}/cfg/1007/cropped_{name}.xml"
     updateCalibInfo(ltop, rtop, lbot, rbot, calibrationFilePath, newCalibPath)
 
     # - process all
-    seqPath = "/home/data/1003Sequences/zrb"
+    seqPath = "/home/data/1007restore"
     seq_input_path = f"{seqPath}/{seqName}"
     seq_output_path = f"{seqPath}/cropped-{seqName}"
     if not os.path.exists(seq_output_path):
         os.makedirs(seq_output_path)
 
-    for i in range(301):
+    for i in range(2):
         image_name = f"Image{i:03d}.bmp"
         input_path = os.path.join(seq_input_path, image_name)
 
