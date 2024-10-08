@@ -1,0 +1,29 @@
+[task]
+frames = 30
+seqs = ["Boys"]
+
+
+[path]
+input = "/path/to/input"
+output = "/path/to/output"
+config = ""
+
+
+[executables]
+vvc = "/path/to/EncoderAppStatic"
+rlc = "/path/to/RLC40"
+mca10 = ""
+mca20 = ""
+
+
+[QP]
+"Boys" = [48, 52]
+
+
+[VTM]
+vtm_types = ["RA"]
+ConformanceMode = 1
+
+
+[RLC]
+views = 5
