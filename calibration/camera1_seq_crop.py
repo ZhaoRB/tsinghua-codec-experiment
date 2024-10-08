@@ -50,11 +50,11 @@ if __name__ == "__main__":
     # - process all
     seqPath = "/home/data/1007restore"
     seq_input_path = f"{seqPath}/{seqName}"
-    seq_output_path = f"{seqPath}/cropped-{seqName}"
+    seq_output_path = f"{seqPath}/cropped_{seqName}"
     if not os.path.exists(seq_output_path):
         os.makedirs(seq_output_path)
 
-    for i in range(2):
+    for i in range(301):
         image_name = f"Image{i:03d}.bmp"
         input_path = os.path.join(seq_input_path, image_name)
 
