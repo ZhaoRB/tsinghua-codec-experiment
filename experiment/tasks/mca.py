@@ -1,5 +1,9 @@
 import subprocess
 
+
+def update_cfg_file(cfg_path):
+    pass
+
 def mca_pre(app, input, output, cfgFile):
     pass
 

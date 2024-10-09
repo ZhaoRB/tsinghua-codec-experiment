@@ -1,9 +1,7 @@
 [task]
 frames = 30
 sequences = ["Boys"]
-# tasks = ["mca_pre", "img2yuv", "vvc_codec", "yuv2img", "mca_post", "render"]
 vtm_types = ["RA"]
-tasks = ["img2yuv", "yuv2img"]
 
 
 [path]

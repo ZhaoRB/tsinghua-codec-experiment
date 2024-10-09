@@ -7,5 +7,4 @@ from config import parseConfigFile
 
 def run():
     config = parseConfigFile()
-
     

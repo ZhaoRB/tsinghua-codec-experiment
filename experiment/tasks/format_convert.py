@@ -19,21 +19,19 @@ def img2yuv(app_ffmpeg, input, output, frames=1, startFrame=1):
             "-y",  # 自动覆盖已存在的输出文件，不进行确认。
         ]
     )
-    print("img2yuv")
 
 
 def yuv2img(app_ffmpeg, input, output, width, height):
-    # subprocess.run(
-    #     [
-    #         app_ffmpeg,
-    #         "-s",
-    #         f"{width}x{height}",
-    #         "-pix_fmt",
-    #         "yuv420p",
-    #         "-i",
-    #         input,
-    #         output,
-    #         "-y",  # 自动覆盖已存在的输出文件，不进行确认。
-    #     ]
-    # )
-    print("yuv2img")
+    subprocess.run(
+        [
+            app_ffmpeg,
+            "-s",
+            f"{width}x{height}",
+            "-pix_fmt",
+            "yuv420p",
+            "-i",
+            input,
+            output,
+            "-y",  # 自动覆盖已存在的输出文件，不进行确认。
+        ]
+    )

@@ -13,3 +13,5 @@ docker/
 config/
 
 cfg/
+
+experiment/executable
