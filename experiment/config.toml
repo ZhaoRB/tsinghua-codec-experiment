@@ -1,6 +1,6 @@
 [task]
 frames = 30
-seqs = ["Boys"]
+sequences = ["Boys"]
 # tasks = ["mca_pre", "img2yuv", "vvc_codec", "yuv2img", "mca_post", "render"]
 vtm_types = ["RA"]
 tasks = ["img2yuv", "yuv2img"]
@@ -9,26 +9,14 @@ tasks = ["img2yuv", "yuv2img"]
 [path]
 input = "/home/data"
 output = "/home/data/output_1009"
-config = "./config"
 
 
-[app]
-ffmpeg = "ffmpeg"
-vvc = "./executable/EncoderAppStatic"
-rlc = "./executable/RLC40"
-mca-pre = "./executable/mca-preproc"
-mca-post = "./executable/mca-postproc"
-
-
-[VTM]
+[vtm]
 ConformanceMode = 1
 
-[QP]
-"Boys" = [48, 52]
+[qps]
+Boys = [48, 52]
 
 
-[RLC]
+[rlc]
 views = 5
-
-[resolution]
-"Boys" = [4080, 3068]

@@ -1,22 +1,24 @@
 import subprocess
 
 
-def img2yuv(app_ffmpeg, input, output, startFrame, frames):
-    # subprocess.run(
-    #     [
-    #         app_ffmpeg,
-    #         "-start_number",
-    #         startFrame,
-    #         "-i",
-    #         input,
-    #         "-vf",
-    #         "format=yuv420p",
-    #         "-frames:v",
-    #         frames,
-    #         output,
-    #         "-y",  # 自动覆盖已存在的输出文件，不进行确认。
-    #     ]
-    # )
+def img2yuv(app_ffmpeg, input, output, frames=1, startFrame=1):
+    imagePattern = "Image%03d.png"
+
+    subprocess.run(
+        [
+            app_ffmpeg,
+            "-start_number",
+            startFrame,
+            "-i",
+            f"{input}/{imagePattern}",
+            "-vf",
+            "format=yuv420p",
+            "-frames:v",
+            frames,
+            output,
+            "-y",  # 自动覆盖已存在的输出文件，不进行确认。
+        ]
+    )
     print("img2yuv")
 
 
