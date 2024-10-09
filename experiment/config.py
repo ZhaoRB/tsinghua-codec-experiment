@@ -1,15 +1,17 @@
-import argparse
 import tomllib
 from dataclasses import dataclass
+from typing import Dict, List
 
 
 @dataclass
 class Task:
+    start_frame: int
     frames: int
-    sequences: list[str]
-    vtm_types: list[str]
-    tasks: list[str]
-    qps: dict[str, list[int]]
+    sequences: List[str]
+    vtm_types: List[str]
+    qps: Dict[str, List[int]]
+    tasks: List[str]
+    img_pattern: str
 
 
 @dataclass
@@ -30,31 +32,29 @@ class RLC:
 
 @dataclass
 class Resolution:
-    raw: list
-    mca: list
-    mca20: list
+    raw: List[int]
+    mca: List[int]
+    mca20: List[int]
 
 
-# @dataclass
-# class Config:
-#     task: Task
-#     path: Path
-#     vtm: VTM
-#     rlc: RLC
-#     resolutions: dict[str, Resolution]
+@dataclass
+class Config:
+    task: Task
+    path: Path
+    vtm: VTM
+    rlc: RLC
+    resolutions: Dict[str, Resolution]
 
 
-def parseConfigFile():
-    parser = argparse.ArgumentParser(description="Parse toml configuration file")
-    parser.add_argument("toml_file", help="Path to the toml configuration file")
-    args = parser.parse_args()
-
-    with open(args.toml_file, "rb") as toml_file:
+def parseConfigFile(cfg_file) -> Config:
+    with open(cfg_file, "rb") as toml_file:
         toml_config = tomllib.load(toml_file)
 
     task = (
         Task(
             frames=toml_config["task"]["frame"],
+            start_frame=toml_config["task"]["start_frame"],
+            img_pattern=toml_config["task"]["img_pattern"],
             sequences=toml_config["task"]["sequences"],
             vtm_types=toml_config["task"]["vtm_types"],
             tasks=toml_config["task"]["tasks"],
@@ -75,4 +75,4 @@ def parseConfigFile():
     rlc = (RLC(views=toml_config["rlc"]["views"]),)
     resolutions = {}
 
-    return task, path, vtm, rlc, resolutions
+    return Config(task, path, vtm, rlc, resolutions)

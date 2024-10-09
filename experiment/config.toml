@@ -2,11 +2,22 @@
 frames = 30
 sequences = ["Boys"]
 vtm_types = ["RA"]
+start_frame = 1
+img_pattern = "Image%03d"
+tasks = []
 
 
 [path]
 input = "/home/data"
 output = "/home/data/output_1009"
+
+
+[app]
+mca_pre = "mca-preproc"
+mca_post = "mca-postproc"
+ffmpeg = "ffmpeg"
+vvc = "./executable/EncoderAppStatic"
+rlc = "./executable/RLC40"
 
 
 [vtm]

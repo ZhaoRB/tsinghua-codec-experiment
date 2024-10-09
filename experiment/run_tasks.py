@@ -1,10 +1,16 @@
-from tasks.codec import vvc_codec
-from tasks.format_convert import img2yuv, yuv2img
-from tasks.mca import mca20_post, mca20_pre, mca_post, mca_pre
-from tasks.render import rlc_render
+import argparse
+
 from config import parseConfigFile
 
 
 def run():
-    config = parseConfigFile()
-    
+    parser = argparse.ArgumentParser(description="Parse toml configuration file")
+    parser.add_argument("toml_file", help="Path to the toml configuration file")
+    args = parser.parse_args()
+
+    config = parseConfigFile(args.toml_file)
+
+
+if __name__ == "__main__":
+    run()
+        
