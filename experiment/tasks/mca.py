@@ -1,4 +1,7 @@
+import os
 import subprocess
+
+from ..utils.utils import get_image_path, get_image_res
 
 
 def update_mca_config(app_config_path: str, config: dict, task_type: str, seqname: str, input_path: str, output_path: str):
@@ -28,14 +31,21 @@ def update_mca_config(app_config_path: str, config: dict, task_type: str, seqnam
 
 def mca(config: dict, mca_task_type: str, filename: str):
     seqname = filename.split("_")[0]
-
     cfg_path = f"./config/{seqname}/{mca_task_type}.cfg"
+
     input_folder = config["task"]["input_folder"]
     output_folder = config["task"]["output_folder"]
-
+    
     input_path = f"{input_folder if mca_task_type in ("mca_pre", "mca20_pre") else output_folder}/{filename}"
-    output_path = f"{output_folder}/{filename}_{mca_task_type}"
-
+    output_filename = f"{filename}_{mca_task_type}"
+    output_path = f"{output_folder}/{output_filename}"
+    
+    os.makedirs(output_folder, mode=0o777, exist_ok=True)
     update_mca_config(cfg_path, config, mca_task_type, seqname, input_path, output_path)
 
     subprocess.run([config["app"][mca_task_type], cfg_path])
+
+    img_path = get_image_path(output_path, config["task"]["image_pattern"], config["task"]["start_frame"])
+    width, height = get_image_res(img_path)
+
+    return output_filename, width, height
