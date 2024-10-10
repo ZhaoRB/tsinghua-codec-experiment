@@ -1,4 +1,4 @@
-from config import Config
+from experiment.utils.config import Config
 
 def run_one_task(
     task_name: str,

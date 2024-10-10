@@ -1,27 +1,32 @@
 [task]
 frames = 30
-sequences = ["Boys"]
-vtm_types = ["RA"]
 start_frame = 1
-img_pattern = "Image%03d"
-tasks = []
 
+image_pattern = "Image%03d.png"
+frame_pattern = "frame#%03d"
 
-[path]
-input = "/home/data"
-output = "/home/data/output_1009"
+input_folder = "/home/data"
+output_folder = "/home/data/output_1009"
+
+sequences = ["Boys"]
+
+lvc_tools = ["mca", "mca20"]
+vtm_types = ["RA", "AI"]
 
 
 [app]
 mca_pre = "mca-preproc"
 mca_post = "mca-postproc"
+mca20_pre = ""
+mca20_post = ""
 ffmpeg = "ffmpeg"
 vvc = "./executable/EncoderAppStatic"
 rlc = "./executable/RLC40"
 
 
-[vtm]
+[vtm_params]
 ConformanceMode = 1
+
 
 [qps]
 Boys = [48, 52]

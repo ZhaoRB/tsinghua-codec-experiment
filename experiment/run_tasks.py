@@ -1,6 +1,6 @@
 import argparse
 
-from config import parseConfigFile
+from experiment.utils.config import parseConfigFile
 
 
 def run():

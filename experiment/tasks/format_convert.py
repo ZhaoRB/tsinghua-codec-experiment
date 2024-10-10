@@ -1,12 +1,20 @@
 import subprocess
 
+from PIL import Image
 
-def img2yuv(app_ffmpeg, input, output, frames=1, startFrame=1):
+
+def get_image_resolution(image_path):
+    with Image.open(image_path) as img:
+        width, height = img.size
+    return width, height
+
+
+def img2yuv(ffmpeg, input, output, frames=1, startFrame=1):
     imagePattern = "Image%03d.png"
 
     subprocess.run(
         [
-            app_ffmpeg,
+            ffmpeg,
             "-start_number",
             startFrame,
             "-i",
@@ -16,15 +24,15 @@ def img2yuv(app_ffmpeg, input, output, frames=1, startFrame=1):
             "-frames:v",
             frames,
             output,
-            "-y",  # 自动覆盖已存在的输出文件，不进行确认。
+            "-y",
         ]
     )
 
 
-def yuv2img(app_ffmpeg, input, output, width, height):
+def yuv2img(ffmpeg, input, output, width, height):
     subprocess.run(
         [
-            app_ffmpeg,
+            ffmpeg,
             "-s",
             f"{width}x{height}",
             "-pix_fmt",
@@ -32,6 +40,6 @@ def yuv2img(app_ffmpeg, input, output, width, height):
             "-i",
             input,
             output,
-            "-y",  # 自动覆盖已存在的输出文件，不进行确认。
+            "-y",
         ]
     )
