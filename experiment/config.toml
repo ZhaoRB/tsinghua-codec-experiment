@@ -34,3 +34,7 @@ Boys = [48, 52]
 
 [rlc]
 views = 5
+
+
+[mca]
+crop_ratio = 0.70710678

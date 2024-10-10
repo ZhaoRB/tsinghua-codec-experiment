@@ -9,8 +9,7 @@ def get_image_resolution(image_path):
     return width, height
 
 
-def img2yuv(ffmpeg, input, output, frames=1, startFrame=1):
-    imagePattern = "Image%03d.png"
+def img2yuv(ffmpeg, input, output, frames=1, startFrame=1, image_pattern="Image%03d"):
 
     subprocess.run(
         [
@@ -18,7 +17,7 @@ def img2yuv(ffmpeg, input, output, frames=1, startFrame=1):
             "-start_number",
             startFrame,
             "-i",
-            f"{input}/{imagePattern}",
+            f"{input}/{image_pattern}",
             "-vf",
             "format=yuv420p",
             "-frames:v",
