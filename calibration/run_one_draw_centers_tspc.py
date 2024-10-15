@@ -1,23 +1,25 @@
+import os
+
 import cv2
-import numpy as np
 from center.cal_center import calculateAllCenters
 from center.draw_center import drawCenters
 from parse_xml.parse import parseCalibXmlFile
 
 # - set path
 projectPath = "/home/zrb/project/tsinghua-codec-experiment"
-seqPath = "/home/zrb/data/mpeg148-tspc-seqs"
-name = "NewMiniGarden"
-seqName = name
+calibBasePath = "/home/zrb/data/mpeg148-tspc-seqs/calibration"
+seqBasePath = "/home/zrb/data/mpeg148-tspc-seqs"
 
-calibrationFilePath = f"{projectPath}/cfg/1003/cropped_{name}.xml"
-inputPath = f"{seqPath}/{seqName}/Image001.png"
+calibName = "Boys-fix.xml"
+seqName = "Boys"
+
+calibrationFilePath = os.path.join(projectPath, "./cfg/calibration", calibName)
+inputPath = os.path.join(seqBasePath, seqName, "Image000.png")
 
 image = cv2.imread(inputPath)
 
 # output path
-cornerCenterPath = f"{projectPath}/data/center/four_center_{seqName}.png"
-allCenterPath = f"{projectPath}/data/center/all_center_{seqName}.png"
+allCenterPath = os.path.join(projectPath, f"./data/center/allCenters_{seqName}.png")
 
 # - parse calibration file and calulate center points
 calibInfo = parseCalibXmlFile(calibrationFilePath)
