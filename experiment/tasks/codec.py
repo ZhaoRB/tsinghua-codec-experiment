@@ -2,11 +2,11 @@ import subprocess
 
 
 def vvc_codec(
-    app, input, output_bitstream, output_yuv, cfgFile, width, height, frames, qp
+    config: dict, filename, output_bitstream, output_yuv, cfgFile, width, height, frames, qp
 ):
     subprocess.run(
         [
-            app,
+            config["app"]["vvc"],
             "-c",
             cfgFile,
             "-wdt",

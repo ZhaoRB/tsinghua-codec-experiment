@@ -13,12 +13,20 @@ with open(args.toml_file, "rb") as toml_file:
     config = tomllib.load(toml_file)
 
 
-def run(seq, tool):
-    filename, mca_width, mca_height = mca(config, f"{tool}_pre", seq)
+def run_pre(seq, tool):
+    filename = mca(config, f"{tool}_pre", seq)
+    
 
-    config.update({f"{tool}_res": [mca_width, mca_height]})
+    img_yuv_convert("img2yuv", config, filename)
 
-    img_yuv_convert("img2yuv", config, filename, mca_width, mca_height)
+def run_codec():
+    pass
+
+def run_post():
+    pass
+
+def run_render():
+    pass
 
 
 if __name__ == "__main__":
@@ -26,4 +34,7 @@ if __name__ == "__main__":
         futures = []
         for seq in config["task"]["sequences"]:
             for tool in config["task"]["lvc_tools"]:
-                futures.append(executor.submit(run, seq, tool))
+                futures.append(executor.submit(run_pre, seq, tool))
+                for vtm_cfg in config["task"]["vtm_types"]:
+                    for qp in config["qps"][seq]:
+                        run_codec(vtm_cfg, qp)

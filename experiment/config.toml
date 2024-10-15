@@ -15,10 +15,10 @@ vtm_types = ["RA", "AI"]
 
 
 [app]
-mca_pre = "mca-preproc"
-mca_post = "mca-postproc"
-mca20_pre = ""
-mca20_post = ""
+mca_pre = "./executable/mca-preproc"
+mca_post = "./executable/mca-postproc"
+mca20_pre = "./executable/mca20-pre"
+mca20_post = "./executable/mca20-post"
 ffmpeg = "ffmpeg"
 vvc = "./executable/EncoderAppStatic"
 rlc = "./executable/RLC40"

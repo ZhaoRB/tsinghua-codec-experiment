@@ -1,5 +1,7 @@
 import subprocess
 
+from ..utils.utils import get_image_path, get_image_res
+
 
 def img_yuv_convert(type: str, config: dict, filename: str, width, height):
     ffmpeg = config["app"]["ffmpeg"]

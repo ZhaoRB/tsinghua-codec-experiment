@@ -1,6 +1,6 @@
 import argparse
 import concurrent.futures
-import tomllib
+import toml
 
 from tasks.format_convert import img_yuv_convert
 from tasks.mca import mca
@@ -10,7 +10,7 @@ parser.add_argument("toml_file", help="Path to the toml configuration file")
 args = parser.parse_args()
 
 with open(args.toml_file, "rb") as toml_file:
-    config = tomllib.load(toml_file)
+    config = toml.load(toml_file)
 
 
 def run(seq, tool):

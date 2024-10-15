@@ -1,8 +1,6 @@
 import os
 import subprocess
 
-from ..utils.utils import get_image_path, get_image_res
-
 
 def update_mca_config(app_config_path: str, config: dict, task_type: str, seqname: str, input_path: str, output_path: str):
     app_add_config = {}
@@ -45,7 +43,4 @@ def mca(config: dict, mca_task_type: str, filename: str):
 
     subprocess.run([config["app"][mca_task_type], cfg_path])
 
-    img_path = get_image_path(output_path, config["task"]["image_pattern"], config["task"]["start_frame"])
-    width, height = get_image_res(img_path)
-
-    return output_filename, width, height
+    return output_filename
