@@ -7,17 +7,17 @@ from tasks.format_convert import img2yuv, yuv2img
 from tasks.render import rlc_render
 
 # parameters
-inputFolder = "/home/zrb/data/mpeg148-tspc-seqs"
-outputFolder = "/home/zrb/data/codec-output-30frames"
+inputFolder = "/home/data/mpeg148-tspc-seqs"
+outputFolder = "/home/data/1021-tspc-multiQP-codec-render"
 configFolder = "/home/zrb/project/tsinghua-codec-experiment/experiment/config"
 
 frameToBeEncoded = 30
-qps = [48, 46, 44, 42, 40, 38, 36, 34, 32, 30]
-qps = [48]
-seqs = ["Boys", "HandTools", "NewMotherboard", "MiniGarden"]
-seqs = ["Boys"]
+# qps = [48, 46, 44, 42, 40, 38, 36, 34, 32, 30]
+qps = [46, 42, 38, 34, 32, 30]
+seqs = ["HandTools", "NewMotherboard", "MiniGarden"]
+# seqs = ["Boys"]
 
-max_workers = 16  # Set the maximum number of concurrent processes
+max_workers = 24  # Set the maximum number of concurrent processes
 
 
 def run_task(seq, qp):
@@ -56,18 +56,20 @@ def run_task(seq, qp):
 
     # 2. ffmpeg yuv2img
     ffmpeg = "ffmpeg"
+    output_yuv2img_folder = os.path.join(outputFolder, f"codec-{seq}_qp{qp}")
     output_yuv2img = os.path.join(outputFolder, f"codec-{seq}_qp{qp}", "Image%03d.png")
-    os.makedirs(output_yuv2img, exist_ok=True)
+    os.makedirs(output_yuv2img_folder, exist_ok=True)
 
     yuv2img(ffmpeg, width, height, output_yuv, output_yuv2img, log_file)
 
     # 3. rlc render
+    output_render_folder = os.path.join(outputFolder, f"render-{seq}_qp{qp}")
     output_render = os.path.join(outputFolder, f"render-{seq}_qp{qp}", "frame#%03d")
-    os.makedirs(output_render, exist_ok=True)
+    os.makedirs(output_render_folder, exist_ok=True)
 
     rlc = "/home/zrb/project/tsinghua-codec-experiment/experiment/executable/RLC40"
-    rlc_cfg_path = os.path.join(outputFolder, seq, "param.cfg")
-    calib_path = os.path.join(outputFolder, seq, "calib.xml")
+    rlc_cfg_path = os.path.join(configFolder, seq, "param.cfg")
+    calib_path = os.path.join(configFolder, seq, "calib.xml")
 
     rlc_render(
         rlc,
@@ -78,6 +80,7 @@ def run_task(seq, qp):
         0,
         frameToBeEncoded,
         5,
+        log_file,
     )
 
     # 4. render result, img2yuv
@@ -107,3 +110,8 @@ with ProcessPoolExecutor(max_workers=max_workers) as executor:
             future.result()  # This will raise any exception that occurred in the process
         except Exception as e:
             print(f"An error occurred: {e}")
+
+
+# for seq in seqs:
+#     for qp in qps:
+#         run_task(seq, qp)

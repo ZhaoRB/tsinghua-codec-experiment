@@ -12,7 +12,7 @@ def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath):
 
     # Log the start of the task
     logging.info(
-        f"[LVC TEST]: img2yuv started with input images: {input_images} and output: {output_yuv}"
+        f"[LVC TEST]: img2yuv started with input images: {input_images} and output: {output_yuv}\n"
     )
 
     try:
@@ -37,13 +37,13 @@ def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath):
 
         # Log the successful completion of the task
         logging.info(
-            f"[LVC TEST]: img2yuv completed successfully with output: {output_yuv}"
+            f"[LVC TEST]: img2yuv completed successfully with output: {output_yuv}\n\n"
         )
 
     except subprocess.CalledProcessError as e:
         # Log the error if subprocess fails
         logging.error(
-            f"[LVC TEST]: img2yuv failed for input: {input_images}. Error: {str(e)}"
+            f"[LVC TEST]: img2yuv failed for input: {input_images}. Error: {str(e)}\n\n"
         )
 
 
@@ -57,7 +57,7 @@ def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath):
 
     # Log the start of the task
     logging.info(
-        f"[LVC TEST]: yuv2img started with input: {input_yuv} and output images: {output_images}"
+        f"[LVC TEST]: yuv2img started with input: {input_yuv} and output images: {output_images}\n"
     )
 
     try:
@@ -71,6 +71,8 @@ def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath):
                     "yuv420p",
                     "-i",
                     input_yuv,
+                    "-start_number",
+                    "0",
                     output_images,
                     "-y",
                 ],
@@ -80,11 +82,11 @@ def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath):
 
         # Log the successful completion of the task
         logging.info(
-            f"[LVC TEST]: yuv2img completed successfully with output images: {output_images}"
+            f"[LVC TEST]: yuv2img completed successfully with output images: {output_images}\n\n"
         )
 
     except subprocess.CalledProcessError as e:
         # Log the error if subprocess fails
         logging.error(
-            f"[LVC TEST]: yuv2img failed for input: {input_yuv}. Error: {str(e)}"
+            f"[LVC TEST]: yuv2img failed for input: {input_yuv}. Error: {str(e)}\n\n"
         )

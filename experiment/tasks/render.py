@@ -49,7 +49,7 @@ def rlc_render(
 
     # Log the start of the task
     logging.info(
-        f"[LVC TEST]: RLC rendering started for config: {configFile} with input images: {inputImages}, output folder: {outputFolder}, calibration file: {calibFile}, view number: {viewNum}"
+        f"[LVC TEST]: RLC rendering started for config: {configFile} with input images: {inputImages}, output folder: {outputFolder}, calibration file: {calibFile}, view number: {viewNum}\n"
     )
 
     try:
@@ -69,11 +69,11 @@ def rlc_render(
 
         # Log the successful completion of the task
         logging.info(
-            f"[LVC TEST]: RLC rendering completed successfully for config: {configFile}"
+            f"[LVC TEST]: RLC rendering completed successfully for config: {configFile}\n\n"
         )
 
     except subprocess.CalledProcessError as e:
         # Log the error if subprocess fails
         logging.error(
-            f"[LVC TEST]: RLC rendering failed for config: {configFile}. Error: {str(e)}"
+            f"[LVC TEST]: RLC rendering failed for config: {configFile}. Error: {str(e)}\n\n"
         )

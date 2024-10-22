@@ -23,7 +23,7 @@ def vvc_codec(
 
     # Log the start of the task
     logging.info(
-        f"[LVC TEST]: VVC encoding started for {input_yuv} with QP {qp}. Output will be saved to {output_bitstream} and {output_yuv}"
+        f"[LVC TEST]: VVC encoding started for {input_yuv} with QP {qp}. Output will be saved to {output_bitstream} and {output_yuv}\n"
     )
 
     try:
@@ -58,11 +58,11 @@ def vvc_codec(
 
         # Log the successful completion of the task
         logging.info(
-            f"[LVC TEST]: VVC encoding completed successfully for {input_yuv} with QP {qp}."
+            f"[LVC TEST]: VVC encoding completed successfully for {input_yuv} with QP {qp}\n\n"
         )
 
     except subprocess.CalledProcessError as e:
         # Log the error if subprocess fails
         logging.error(
-            f"[LVC TEST]: VVC encoding failed for {input_yuv} with QP {qp}. Error: {str(e)}"
+            f"[LVC TEST]: VVC encoding failed for {input_yuv} with QP {qp}. Error: {str(e)}\n\n"
         )
