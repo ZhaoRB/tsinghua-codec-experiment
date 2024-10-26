@@ -5,11 +5,11 @@ from parse_xml.parse import parseCalibXmlFile, updateCalibInfo
 from rotateAndCrop.crop import calCropPos, crop
 
 # - set path
-calibFolder = "/home/zrb/project/tsinghua-codec-experiment/cfg/1007"
-imageFolder = "/home/zrb/project/tsinghua-codec-experiment/data/1007"
-seqName = "Motherboard"
+calibFolder = "/home/zrb/project/tsinghua-codec-experiment/cfg"
+imageFolder = "/home/zrb/project/tsinghua-codec-experiment/data"
+seqName = "Matryoshka"
 
-image = cv2.imread(f"{imageFolder}/{seqName}.bmp")
+image = cv2.imread(f"{imageFolder}/sample/{seqName}.bmp")
 
 # - parse calibration file and calulate center points
 calibrationFilePath = f"{calibFolder}/{seqName}.xml"
@@ -21,7 +21,7 @@ drawCenters(
     image.copy(),
     allCenterPoints.reshape(allCenterPoints.shape[0] * allCenterPoints.shape[1], 2),
     calibInfo.diameter,
-    f"{imageFolder}/center_{seqName}.png",
+    f"{imageFolder}/center/center_{seqName}.png",
 )
 
 # - calculate crop params, update calibration file
@@ -54,11 +54,11 @@ allCenterPoints = calculateAllCenters(calibInfo)
 # - crop
 
 croppedImage = crop(image, ltopX, ltopY, rbotX, rbotY)
-cv2.imwrite(f"{imageFolder}/cropped_{seqName}.png", croppedImage)
+cv2.imwrite(f"{imageFolder}/cropAndRotate/cropped_{seqName}.png", croppedImage)
 
 drawCenters(
     croppedImage.copy(),
     allCenterPoints.reshape(allCenterPoints.shape[0] * allCenterPoints.shape[1], 2),
     calibInfo.diameter,
-    f"{imageFolder}/center_cropped_{seqName}.png",
+    f"{imageFolder}/center/center_cropped_{seqName}.png",
 )
