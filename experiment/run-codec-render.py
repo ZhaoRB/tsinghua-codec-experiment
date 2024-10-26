@@ -13,7 +13,8 @@ configFolder = "/home/zrb/project/tsinghua-codec-experiment/experiment/config"
 
 frameToBeEncoded = 30
 # qps = [48, 46, 44, 42, 40, 38, 36, 34, 32, 30]
-qps = [46, 42, 38, 34, 32, 30]
+# qps = [46, 42, 38, 34, 32, 30]
+qps = [50, 52, 54]
 seqs = ["HandTools", "NewMotherboard", "MiniGarden"]
 # seqs = ["Boys"]
 
