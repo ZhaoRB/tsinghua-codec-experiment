@@ -5,7 +5,7 @@ import subprocess
 def vvc_codec(
     Encoder,
     input_yuv,
-    output_bitstream,
+    # output_bitstream,
     output_yuv,
     cfgFile,
     width,
@@ -23,7 +23,7 @@ def vvc_codec(
 
     # Log the start of the task
     logging.info(
-        f"[LVC TEST]: VVC encoding started for {input_yuv} with QP {qp}. Output will be saved to {output_bitstream} and {output_yuv}\n"
+        f"[LVC TEST]: VVC encoding started for {input_yuv} with QP {qp}. Output will be saved to {output_yuv}\n"
     )
 
     try:
@@ -47,8 +47,8 @@ def vvc_codec(
                     f"--QP={qp}",
                     "-i",
                     input_yuv,
-                    "-b",
-                    output_bitstream,  # Bitstream output file name
+                    # "-b",
+                    # output_bitstream,  # Bitstream output file name
                     "-o",
                     output_yuv,  # Reconstructed YUV output file name
                 ],

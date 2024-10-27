@@ -6,27 +6,20 @@ from tasks.format_convert import img2yuv
 from tasks.render import rlc_render
 
 # parameters
-inputFolder = "/home/data/mpeg148-sequences/"
-outputFolder = "/home/data/find-qp/render-base"
+inputFolder = "/home/data/mpeg148-sequences"
+outputFolder = "/home/data/find-qp/test"
+# configFolder = "/home/zrb/project/tsinghua-codec-experiment/cross-check/config"
 configFolder = "./config"
 
 frames = 30
-seqs = ["NagoyaFujita", "NagoyaOrigami"]
-rendered_resolutions = {
-    "Matryoshka": [1370, 1004],
-    "NagoyaFujita": [888, 904],
-    "NagoyaOrigami": [888, 904],
-}
-
-rlc = "./executable/RLC40"
-ffmpeg = "./executable/ffmpeg"
+seqs = ["NagoyaFujita", "Matryoshka"]
 
 
 def run_task(seq):
     print(f"Starting task for {seq}")
     start_time = time.time()  # Record start time
 
-    log_file = os.path.join(outputFolder, "../log", f"{seq}_base.log")
+    log_file = os.path.join(outputFolder, f"{seq}_base.log")
 
     # width = 3976 if seq == "Boys" else 4036
     # height = 2956 if seq == "Boys" else 3064
@@ -37,6 +30,7 @@ def run_task(seq):
     output_render = os.path.join(outputFolder, f"render-{seq}_base", "frame#%03d")
     os.makedirs(output_render_folder, exist_ok=True)
 
+    rlc = "/home/zrb/project/tsinghua-codec-experiment/experiment/executable/RLC40"
     rlc_cfg_path = os.path.join(configFolder, seq, "param.cfg")
     calib_path = os.path.join(configFolder, seq, "calib.xml")
 
@@ -53,8 +47,10 @@ def run_task(seq):
     )
 
     # render result, img2yuv
-    rendered_width = rendered_resolutions[seq][0]
-    rendered_height = rendered_resolutions[seq][1]
+    ffmpeg = "ffmpeg"
+
+    rendered_width = 1348
+    rendered_height = 980 if seq == "Boys" else 1004
 
     input_img2yuv = os.path.join(output_render, "image_013.png")
     output_render_yuv = os.path.join(
@@ -78,8 +74,3 @@ with ProcessPoolExecutor(max_workers=16) as executor:
             future.result()  # This will raise any exception that occurred in the process
         except Exception as e:
             print(f"An error occurred: {e}")
-
-
-# for seq in seqs:
-#     for qp in qps:
-#         run_task(seq, qp)

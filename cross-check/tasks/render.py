@@ -1,4 +1,6 @@
+import hashlib
 import logging
+import os
 import subprocess
 
 
@@ -23,8 +25,12 @@ def updateConfig(
     config_data["Calibration_xml"] = calibFile
     config_data["viewNum"] = str(viewNum)
 
-    # Write the updated config back to the file
-    with open(configFile, "w") as file:
+    return config_data
+
+
+def saveTempConfig(config_data, tempConfigFile):
+    # Write the updated config to a temporary file
+    with open(tempConfigFile, "w") as file:
         for key, value in config_data.items():
             file.write(f"{key}\t{value}\n")
 
@@ -52,9 +58,15 @@ def rlc_render(
         f"[LVC TEST]: RLC rendering started for config: {configFile} with input images: {inputImages}, output folder: {outputFolder}, calibration file: {calibFile}, view number: {viewNum}\n"
     )
 
+    # Generate a unique hash suffix based on inputs to avoid naming conflicts
+    hash_suffix = hashlib.md5(
+        f"{configFile}{inputImages}{startFrame}".encode()
+    ).hexdigest()
+    tempConfigFile = f"./temp/param_{hash_suffix}.cfg"
+
     try:
-        # Update the configuration file before rendering
-        updateConfig(
+        # Update configuration data and save it to the temporary config file
+        config_data = updateConfig(
             configFile,
             inputImages,
             outputFolder,
@@ -63,17 +75,26 @@ def rlc_render(
             calibFile,
             viewNum,
         )
+        saveTempConfig(config_data, tempConfigFile)
 
-        # Run the RLC render process
-        subprocess.run([rlc, configFile], check=True)
+        # Run the RLC render process with the temporary config file
+        subprocess.run([rlc, tempConfigFile], check=True)
 
         # Log the successful completion of the task
         logging.info(
-            f"[LVC TEST]: RLC rendering completed successfully for config: {configFile}\n\n"
+            f"[LVC TEST]: RLC rendering completed successfully for config: {tempConfigFile}\n\n"
         )
 
     except subprocess.CalledProcessError as e:
         # Log the error if subprocess fails
         logging.error(
-            f"[LVC TEST]: RLC rendering failed for config: {configFile}. Error: {str(e)}\n\n"
+            f"[LVC TEST]: RLC rendering failed for config: {tempConfigFile}. Error: {str(e)}\n\n"
         )
+
+    finally:
+        # Remove the temporary config file
+        if os.path.exists(tempConfigFile):
+            os.remove(tempConfigFile)
+            logging.info(
+                f"[LVC TEST]: Temporary config file {tempConfigFile} deleted.\n"
+            )

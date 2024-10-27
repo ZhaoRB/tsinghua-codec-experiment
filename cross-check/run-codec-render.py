@@ -7,103 +7,175 @@ from tasks.format_convert import img2yuv, yuv2img
 from tasks.render import rlc_render
 
 # parameters
-inputFolder = "/home/data/mpeg148-tspc-seqs"
-outputFolder = "/home/data/1021-tspc-multiQP-codec-render"
-configFolder = "/home/zrb/project/tsinghua-codec-experiment/experiment/config"
+frames = 300
 
-frameToBeEncoded = 30
-# qps = [48, 46, 44, 42, 40, 38, 36, 34, 32, 30]
-# qps = [46, 42, 38, 34, 32, 30]
-qps = [50, 52, 54]
-seqs = ["HandTools", "NewMotherboard", "MiniGarden"]
-# seqs = ["Boys"]
+seqs = [
+    "Boys",
+    "MiniGarden",
+    "HandTools",
+    "NewMotherboard",
+    "Matryoshka",
+    "NagoyaFujita",
+    "NagoyaOrigami",
+]
+qps = {
+    "Boys": [36, 40, 44, 48],
+    "HandTools": [54, 50, 46, 42, 38, 34],
+    "NewMotherboard": [54, 50, 46, 42, 38, 34],
+    "MiniGarden": [54, 50, 46, 42, 38, 34],
+    "Matryoshka": [40, 44, 48, 52, 56, 60],
+    "NagoyaFujita": [24, 28, 32, 36, 40, 44],
+    "NagoyaOrigami": [24, 28, 32, 36, 40, 44],
+}
+resolutions = {
+    "Boys": [3976, 2956],
+    "HandTools": [4036, 3064],
+    "NewMotherboard": [4036, 3064],
+    "MiniGarden": [4036, 3064],
+    "Matryoshka": [4040, 3064],
+    "NagoyaFujita": [2048, 2048],
+    "NagoyaOrigami": [2048, 2048],
+}
 
-max_workers = 24  # Set the maximum number of concurrent processes
+rendered_resolutions = {
+    "Boys": [1348, 1004],
+    "HandTools": [1370, 1004],
+    "NewMotherboard": [1370, 1004],
+    "MiniGarden": [1370, 1004],
+    "Matryoshka": [1370, 1004],
+    "NagoyaFujita": [888, 904],
+    "NagoyaOrigami": [888, 904],
+}
+
+encoder = "./executable/EncoderAppStatic"
+ffmpeg = "./executable/ffmpeg"
+rlc = "./executable/RLC40-1025"
+
+inputFolder = "/home/data/mpeg148-sequences"
+outputFolder = "/home/data/mpeg148-anchor"
+configFolder = "./config"
+
+codecOutputFolder = os.path.join(outputFolder, "codec")
+os.makedirs(codecOutputFolder, exist_ok=True)
+
+renderOutputFolder = os.path.join(outputFolder, "render")
+os.makedirs(renderOutputFolder, exist_ok=True)
+
+
+def getCodecYuvPath(seq, qp):
+    return os.path.join(
+        codecOutputFolder,
+        f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_qp{qp}_{frames}frames_8bit_yuv420.yuv",
+    )
+
+
+def getCodecImageFolderPath(seq, qp):
+    filepath = os.path.join(codecOutputFolder, f"{seq}_qp{qp}")
+    os.makedirs(filepath, exist_ok=True)
+    return filepath
+
+
+def getCodecLogFilePath(seq, qp):
+    return os.path.join(codecOutputFolder, f"{seq}_qp{qp}.log")
+
+
+def getRenderImageFolderPath(seq, qp):
+    filepath = os.path.join(renderOutputFolder, f"{seq}_qp{qp}")
+    os.makedirs(filepath, exist_ok=True)
+    return filepath
+
+
+def getRenderYuvPath(seq, qp):
+    return os.path.join(
+        renderOutputFolder,
+        f"{seq}_{rendered_resolutions[seq][0]}x{rendered_resolutions[seq][1]}_qp{qp}_{frames}frames_8bit_yuv420.yuv",
+    )
+
+
+def getRenderLogFilePath(seq, qp):
+    return os.path.join(renderOutputFolder, f"{seq}_qp{qp}.log")
+
+
+def getRawYuvPath(seq):
+    return os.path.join(
+        inputFolder,
+        f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_300frames_8bit_yuv420.yuv",
+    )
 
 
 def run_task(seq, qp):
     print(f"Starting task for {seq} with QP {qp}...")
     start_time = time.time()  # Record start time
 
-    log_file = os.path.join(outputFolder, f"{seq}_qp{qp}.log")
+    # ========================= start =========================
 
-    width = 3976 if seq == "Boys" else 4036
-    height = 2956 if seq == "Boys" else 3064
+    width, height = resolutions[seq]
 
     # 1. vvc codec
-    input_yuv = os.path.join(
-        inputFolder, f"{seq}_{width}x{height}_300frames_8bit_yuv420.yuv"
-    )
-    output_bitstream = os.path.join(outputFolder, f"codec-{seq}_qp{qp}_bitstream")
-    output_yuv = os.path.join(
-        outputFolder,
-        f"codec-{seq}_{width}x{height}_qp{qp}_{frameToBeEncoded}frames_8bit_yuv420p.yuv",
-    )
-
-    encoder = "/home/zrb/project/tsinghua-codec-experiment/experiment/executable/EncoderAppStatic"
-
     vvc_codec(
         encoder,
-        input_yuv,
-        output_bitstream,
-        output_yuv,
+        getRawYuvPath(seq),
+        getCodecYuvPath(seq, qp),
         os.path.join(configFolder, "vtm_RA.cfg"),
         width,
         height,
-        frameToBeEncoded,
+        frames,
         qp,
-        log_file,
+        getCodecLogFilePath(seq, qp),
     )
 
     # 2. ffmpeg yuv2img
-    ffmpeg = "ffmpeg"
-    output_yuv2img_folder = os.path.join(outputFolder, f"codec-{seq}_qp{qp}")
-    output_yuv2img = os.path.join(outputFolder, f"codec-{seq}_qp{qp}", "Image%03d.png")
-    os.makedirs(output_yuv2img_folder, exist_ok=True)
-
-    yuv2img(ffmpeg, width, height, output_yuv, output_yuv2img, log_file)
+    image_pattern = os.path.join(getCodecImageFolderPath(seq, qp), "Image%03d.png")
+    yuv2img(
+        ffmpeg,
+        width,
+        height,
+        getCodecYuvPath(seq, qp),
+        image_pattern,
+        getCodecLogFilePath(seq, qp),
+    )
 
     # 3. rlc render
-    output_render_folder = os.path.join(outputFolder, f"render-{seq}_qp{qp}")
-    output_render = os.path.join(outputFolder, f"render-{seq}_qp{qp}", "frame#%03d")
-    os.makedirs(output_render_folder, exist_ok=True)
-
-    rlc = "/home/zrb/project/tsinghua-codec-experiment/experiment/executable/RLC40"
+    frame_pattern = os.path.join(getRenderImageFolderPath(seq, qp), "frame#%03d")
     rlc_cfg_path = os.path.join(configFolder, seq, "param.cfg")
     calib_path = os.path.join(configFolder, seq, "calib.xml")
 
     rlc_render(
         rlc,
         rlc_cfg_path,
-        output_yuv2img,
-        output_render,
+        image_pattern,
+        frame_pattern,
         calib_path,
         0,
-        frameToBeEncoded,
+        frames,
         5,
-        log_file,
+        getRenderLogFilePath(seq, qp),
     )
 
     # 4. render result, img2yuv
-    rendered_width = 1348
-    rendered_height = 980 if seq == "Boys" else 1004
-
-    input_img2yuv = os.path.join(output_render, "image_013.png")
-    output_render_yuv = os.path.join(
-        outputFolder,
-        f"render-{seq}_qp{qp}_{rendered_width}x{rendered_height}_{frameToBeEncoded}frames.yuv",
+    rendered_image_pattern = os.path.join(frame_pattern, "image_013.png")
+    img2yuv(
+        ffmpeg,
+        0,
+        frames,
+        rendered_image_pattern,
+        getRenderYuvPath(seq, qp),
+        getRenderLogFilePath(seq, qp),
     )
-    img2yuv(ffmpeg, 0, frameToBeEncoded, input_img2yuv, output_render_yuv, log_file)
+
+    # ========================= end =========================
 
     end_time = time.time()  # Record end time
     duration = end_time - start_time  # Calculate duration
     print(f"Task for {seq} with QP {qp} completed in {duration:.2f} seconds.")
 
 
-with ProcessPoolExecutor(max_workers=max_workers) as executor:
+# max_workers = 24  # Set the maximum number of concurrent processes
+
+with ProcessPoolExecutor(max_workers=24) as executor:
     futures = []
     for seq in seqs:
-        for qp in qps:
+        for qp in qps[seq]:
             futures.append(executor.submit(run_task, seq, qp))
 
     for future in as_completed(futures):
@@ -111,8 +183,3 @@ with ProcessPoolExecutor(max_workers=max_workers) as executor:
             future.result()  # This will raise any exception that occurred in the process
         except Exception as e:
             print(f"An error occurred: {e}")
-
-
-# for seq in seqs:
-#     for qp in qps:
-#         run_task(seq, qp)

@@ -68,11 +68,11 @@ def draw_rd_curve(csvFilePath, xType, yType, figurePath):
 
 
 if __name__ == "__main__":
-    baseFolder = "/home/data/1021-tspc-multiQP-codec-render/summary"
+    baseFolder = "/home/data/find-qp/summary"
     sequences = ["Boys", "HandTools", "NewMotherboard", "MiniGarden"]
-    # sequences = ["Boys"]
+    sequences = ["Matryoshka", "NagoyaFujita", "NagoyaOrigami"]
 
     for seq in sequences:
         csvFilePath = os.path.join(baseFolder, f"{seq}_summary.csv")
         draw_rd_curve(csvFilePath, X_AXIS_QP, Y_AXIS_MVPSNR, baseFolder)
-        draw_rd_curve(csvFilePath, X_AXIS_BITRATE, Y_AXIS_MVPSNR, baseFolder)
+        # draw_rd_curve(csvFilePath, X_AXIS_BITRATE, Y_AXIS_MVPSNR, baseFolder)

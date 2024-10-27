@@ -90,3 +90,7 @@ def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath):
         logging.error(
             f"[LVC TEST]: yuv2img failed for input: {input_yuv}. Error: {str(e)}\n\n"
         )
+
+
+def img2yuv_subjective():
+    pass
