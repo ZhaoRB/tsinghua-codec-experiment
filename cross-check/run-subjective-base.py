@@ -8,7 +8,7 @@ seqs = [
     "NewMotherboard",
     "Matryoshka",
     "NagoyaFujita",
-    "NagoyaOrigami",
+    # "NagoyaOrigami",
 ]
 
 raytrixSequences = ["NagoyaFujita", "NagoyaOrigami", "Boxer-IrishMan-Gladiator"]
@@ -22,16 +22,15 @@ def run_task(seq):
     pattern = 5 if seq in raytrixSequences else 6
 
     input_pattern = os.path.join(inputFolder, seq, "frame#%03d", "image_%03d.png")
-    outputPath = os.path.join(outputFolder, f"{seq}_1920x1080_8bit_yuv420p")
 
     subprocess.run(
         [
             "python",
             "./tasks/pose_trace_generation.py",
             input_pattern,
-            outputPath,
+            f"../../render-base-subjective/{seq}_1920x1080_8bit_yuv420p.yuv",
             "-p",
-            pattern,
+            f"{pattern}",
             "-pad",
             "1920x1080",
         ]

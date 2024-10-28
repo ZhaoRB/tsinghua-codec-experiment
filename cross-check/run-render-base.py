@@ -15,12 +15,12 @@ doConvert = True  # output from rlc is images, decide weather convert to yuv
 
 frames = 300
 seqs = [
-    "Boys",
-    "MiniGarden",
-    "HandTools",
-    "NewMotherboard",
-    "Matryoshka",
-    "NagoyaFujita",
+    # "Boys",
+    # "MiniGarden",
+    # "HandTools",
+    # "NewMotherboard",
+    # "Matryoshka",
+    # "NagoyaFujita",
     "NagoyaOrigami",
 ]
 rendered_resolutions = {
