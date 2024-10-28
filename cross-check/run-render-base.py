@@ -6,13 +6,28 @@ from tasks.format_convert import img2yuv
 from tasks.render import rlc_render
 
 # parameters
-inputFolder = "/home/data/mpeg148-sequences/"
-outputFolder = "/home/data/find-qp/render-base"
-configFolder = "./config"
+frames = 300
 
-frames = 30
-seqs = ["NagoyaFujita", "NagoyaOrigami"]
+max_workers = 8  # Set the maximum number of concurrent processes
+
+doRender = True
+doConvert = True  # output from rlc is images, decide weather convert to yuv
+
+frames = 300
+seqs = [
+    "Boys",
+    "MiniGarden",
+    "HandTools",
+    "NewMotherboard",
+    "Matryoshka",
+    "NagoyaFujita",
+    "NagoyaOrigami",
+]
 rendered_resolutions = {
+    "Boys": [1348, 980],
+    "HandTools": [1370, 1004],
+    "NewMotherboard": [1370, 1004],
+    "MiniGarden": [1370, 1004],
     "Matryoshka": [1370, 1004],
     "NagoyaFujita": [888, 904],
     "NagoyaOrigami": [888, 904],
@@ -21,30 +36,50 @@ rendered_resolutions = {
 rlc = "./executable/RLC40"
 ffmpeg = "./executable/ffmpeg"
 
+inputFolder = "/home/data/mpeg148-sequences/"
+outputFolder = "/home/data/mpeg148-anchor/render-base"
+os.makedirs(outputFolder, exist_ok=True)
 
-def run_task(seq):
+configFolder = "./config"
+
+
+def getBaseRenderImageFolderPath(seq):
+    filepath = os.path.join(outputFolder, seq)
+    os.makedirs(filepath, exist_ok=True)
+    return filepath
+
+
+def getBaseRenderYuvPath(seq):
+    return os.path.join(
+        outputFolder,
+        f"{seq}_{rendered_resolutions[seq][0]}x{rendered_resolutions[seq][1]}_{frames}frames_8bit_yuv420.yuv",
+    )
+
+
+def getRenderLogFilePath(seq):
+    return os.path.join(outputFolder, f"{seq}.log")
+
+
+def getRawImagePattern(seq):
+    return os.path.join(inputFolder, seq, "Image%03d.png")
+
+
+def run_task(seq, convertToYuv=True):
     print(f"Starting task for {seq}")
     start_time = time.time()  # Record start time
 
-    log_file = os.path.join(outputFolder, "../log", f"{seq}_base.log")
-
-    # width = 3976 if seq == "Boys" else 4036
-    # height = 2956 if seq == "Boys" else 3064
+    log_file = getRenderLogFilePath(seq)
 
     # rlc render
-    input_images = os.path.join(inputFolder, seq, "Image%03d.png")
-    output_render_folder = os.path.join(outputFolder, f"render-{seq}_base")
-    output_render = os.path.join(outputFolder, f"render-{seq}_base", "frame#%03d")
-    os.makedirs(output_render_folder, exist_ok=True)
-
+    frame_pattern = os.path.join(getBaseRenderImageFolderPath(seq), "frame#%03d")
     rlc_cfg_path = os.path.join(configFolder, seq, "param.cfg")
     calib_path = os.path.join(configFolder, seq, "calib.xml")
 
     rlc_render(
         rlc,
         rlc_cfg_path,
-        input_images,
-        output_render,
+        getRawImagePattern(seq),
+        frame_pattern,
         calib_path,
         0,
         frames,
@@ -52,23 +87,24 @@ def run_task(seq):
         log_file,
     )
 
-    # render result, img2yuv
-    rendered_width = rendered_resolutions[seq][0]
-    rendered_height = rendered_resolutions[seq][1]
-
-    input_img2yuv = os.path.join(output_render, "image_013.png")
-    output_render_yuv = os.path.join(
-        outputFolder,
-        f"render-{seq}_base_{rendered_width}x{rendered_height}_{frames}frames.yuv",
-    )
-    img2yuv(ffmpeg, 0, frames, input_img2yuv, output_render_yuv, log_file)
+    if convertToYuv:
+        # render result, img2yuv
+        rendered_image_pattern = os.path.join(frame_pattern, "image_013.png")
+        img2yuv(
+            ffmpeg,
+            0,
+            frames,
+            rendered_image_pattern,
+            getBaseRenderYuvPath(seq),
+            log_file,
+        )
 
     end_time = time.time()  # Record end time
     duration = end_time - start_time  # Calculate duration
     print(f"Task for {seq} completed in {duration:.2f} seconds.")
 
 
-with ProcessPoolExecutor(max_workers=16) as executor:
+with ProcessPoolExecutor(max_workers=max_workers) as executor:
     futures = []
     for seq in seqs:
         futures.append(executor.submit(run_task, seq))

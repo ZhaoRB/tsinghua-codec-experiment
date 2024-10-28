@@ -9,6 +9,11 @@ from tasks.render import rlc_render
 # parameters
 frames = 300
 
+max_workers = 24  # Set the maximum number of concurrent processes
+
+doRender = True
+doConvert = True  # output from rlc is images, convert to yuv?
+
 seqs = [
     "Boys",
     "MiniGarden",
@@ -38,7 +43,7 @@ resolutions = {
 }
 
 rendered_resolutions = {
-    "Boys": [1348, 1004],
+    "Boys": [1348, 980],
     "HandTools": [1370, 1004],
     "NewMotherboard": [1370, 1004],
     "MiniGarden": [1370, 1004],
@@ -49,7 +54,7 @@ rendered_resolutions = {
 
 encoder = "./executable/EncoderAppStatic"
 ffmpeg = "./executable/ffmpeg"
-rlc = "./executable/RLC40-1025"
+rlc = "./executable/RLC40"
 
 inputFolder = "/home/data/mpeg148-sequences"
 outputFolder = "/home/data/mpeg148-anchor"
@@ -103,7 +108,7 @@ def getRawYuvPath(seq):
     )
 
 
-def run_task(seq, qp):
+def run_task(seq, qp, render=True, formatConvert=True):
     print(f"Starting task for {seq} with QP {qp}...")
     start_time = time.time()  # Record start time
 
@@ -124,44 +129,46 @@ def run_task(seq, qp):
         getCodecLogFilePath(seq, qp),
     )
 
-    # 2. ffmpeg yuv2img
-    image_pattern = os.path.join(getCodecImageFolderPath(seq, qp), "Image%03d.png")
-    yuv2img(
-        ffmpeg,
-        width,
-        height,
-        getCodecYuvPath(seq, qp),
-        image_pattern,
-        getCodecLogFilePath(seq, qp),
-    )
+    if render:
+        # 2. ffmpeg yuv2img
+        image_pattern = os.path.join(getCodecImageFolderPath(seq, qp), "Image%03d.png")
+        yuv2img(
+            ffmpeg,
+            width,
+            height,
+            getCodecYuvPath(seq, qp),
+            image_pattern,
+            getCodecLogFilePath(seq, qp),
+        )
 
-    # 3. rlc render
-    frame_pattern = os.path.join(getRenderImageFolderPath(seq, qp), "frame#%03d")
-    rlc_cfg_path = os.path.join(configFolder, seq, "param.cfg")
-    calib_path = os.path.join(configFolder, seq, "calib.xml")
+        # 3. rlc render
+        frame_pattern = os.path.join(getRenderImageFolderPath(seq, qp), "frame#%03d")
+        rlc_cfg_path = os.path.join(configFolder, seq, "param.cfg")
+        calib_path = os.path.join(configFolder, seq, "calib.xml")
 
-    rlc_render(
-        rlc,
-        rlc_cfg_path,
-        image_pattern,
-        frame_pattern,
-        calib_path,
-        0,
-        frames,
-        5,
-        getRenderLogFilePath(seq, qp),
-    )
+        rlc_render(
+            rlc,
+            rlc_cfg_path,
+            image_pattern,
+            frame_pattern,
+            calib_path,
+            0,
+            frames,
+            5,
+            getRenderLogFilePath(seq, qp),
+        )
 
-    # 4. render result, img2yuv
-    rendered_image_pattern = os.path.join(frame_pattern, "image_013.png")
-    img2yuv(
-        ffmpeg,
-        0,
-        frames,
-        rendered_image_pattern,
-        getRenderYuvPath(seq, qp),
-        getRenderLogFilePath(seq, qp),
-    )
+        if formatConvert:
+            # 4. render result, img2yuv
+            rendered_image_pattern = os.path.join(frame_pattern, "image_013.png")
+            img2yuv(
+                ffmpeg,
+                0,
+                frames,
+                rendered_image_pattern,
+                getRenderYuvPath(seq, qp),
+                getRenderLogFilePath(seq, qp),
+            )
 
     # ========================= end =========================
 
@@ -170,13 +177,11 @@ def run_task(seq, qp):
     print(f"Task for {seq} with QP {qp} completed in {duration:.2f} seconds.")
 
 
-# max_workers = 24  # Set the maximum number of concurrent processes
-
-with ProcessPoolExecutor(max_workers=24) as executor:
+with ProcessPoolExecutor(max_workers=max_workers) as executor:
     futures = []
     for seq in seqs:
         for qp in qps[seq]:
-            futures.append(executor.submit(run_task, seq, qp))
+            futures.append(executor.submit(run_task, seq, qp, doRender, doConvert))
 
     for future in as_completed(futures):
         try:

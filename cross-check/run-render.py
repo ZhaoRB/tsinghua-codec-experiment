@@ -52,7 +52,7 @@ def getYuvFileName(seq, w, h, frames=300, qp=0):
     return filename
 
 
-def run_task(seq, qp):
+def run_task(seq, qp, convertToYuv=True):
     print(f"Starting task for {seq} with QP {qp}...")
     start_time = time.time()  # Record start time
 
@@ -66,7 +66,7 @@ def run_task(seq, qp):
         codec_output_folder, f"codec-{seq}_qp{qp}", "Image%03d.png"
     )
 
-    # 3. rlc render
+    # rlc render
     render_output_folder = os.path.join(outputFolder, "render")
     output_render_folder = os.path.join(render_output_folder, f"render-{seq}_qp{qp}")
     output_render = os.path.join(
@@ -89,16 +89,17 @@ def run_task(seq, qp):
         log_file,
     )
 
-    # 4. render result, img2yuv
-    rendered_width = rendered_resolutions[seq][0]
-    rendered_height = rendered_resolutions[seq][1]
+    if convertToYuv:
+        # img2yuv
+        rendered_width = rendered_resolutions[seq][0]
+        rendered_height = rendered_resolutions[seq][1]
 
-    input_img2yuv = os.path.join(output_render, "image_013.png")
-    output_render_yuv = os.path.join(
-        render_output_folder,
-        f"render-{seq}_qp{qp}_{rendered_width}x{rendered_height}_{frameToBeEncoded}frames.yuv",
-    )
-    img2yuv(ffmpeg, 0, frameToBeEncoded, input_img2yuv, output_render_yuv, log_file)
+        input_img2yuv = os.path.join(output_render, "image_013.png")
+        output_render_yuv = os.path.join(
+            render_output_folder,
+            f"render-{seq}_qp{qp}_{rendered_width}x{rendered_height}_{frameToBeEncoded}frames.yuv",
+        )
+        img2yuv(ffmpeg, 0, frameToBeEncoded, input_img2yuv, output_render_yuv, log_file)
 
     end_time = time.time()  # Record end time
     duration = end_time - start_time  # Calculate duration
