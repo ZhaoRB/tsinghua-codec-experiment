@@ -1,9 +1,7 @@
 import os
 import time
-from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from initialize import *
-from tasks.codec import vvc_codec
 from tasks.format_convert import yuv2img
 
 
@@ -14,26 +12,13 @@ def run_task(seq, qp):
     # ========================= start =========================
     width, height = resolutions[seq]
 
-    codecLogFile = getCodecLogFilePath(seq, qp)
-    vvc_codec(
-        encoder,
-        getRawYuvPath(seq),
-        getCodecYuvPath(seq, qp),
-        os.path.join(configFolder, "vtm_RA.cfg"),
-        width,
-        height,
-        frames,
-        qp,
-        codecLogFile,
-    )
-
     yuv2img(
         ffmpeg,
         width,
         height,
         getCodecYuvPath(seq, qp),
         getCodecImagePattern(seq, qp),
-        codecLogFile,
+        os.path.join(codecOutputFolder, f"{seq}_qp{qp}.log"),
     )
 
     # ========================= end =========================
@@ -47,14 +32,6 @@ def run_task(seq, qp):
     )
 
 
-with ProcessPoolExecutor(max_workers=max_workers) as executor:
-    futures = []
-    for seq in seqs:
-        for qp in qps[seq]:
-            futures.append(executor.submit(run_task, seq, qp))
-
-    for future in as_completed(futures):
-        try:
-            future.result()  # This will raise any exception that occurred in the process
-        except Exception as e:
-            print(f"An error occurred: {e}")
+for seq in seqs:
+    for qp in qps[seq]:
+        run_task(seq, qp)

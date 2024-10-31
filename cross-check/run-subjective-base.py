@@ -2,13 +2,13 @@ import os
 import subprocess
 
 seqs = [
-    "Boys",
-    "MiniGarden",
-    "HandTools",
-    "NewMotherboard",
-    "Matryoshka",
-    "NagoyaFujita",
-    # "NagoyaOrigami",
+    # "Boys",
+    # "MiniGarden",
+    # "HandTools",
+    # "NewMotherboard",
+    # "Matryoshka",
+    # "NagoyaFujita",
+    "NagoyaOrigami",
 ]
 
 raytrixSequences = ["NagoyaFujita", "NagoyaOrigami", "Boxer-IrishMan-Gladiator"]
