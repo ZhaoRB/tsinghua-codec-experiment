@@ -56,14 +56,11 @@ def run_task(seq, qp):
     )
 
     # 4. render result, img2yuv
-    rendered_image_pattern = os.path.join(
-        getRenderFramePattern(seq, qp), "image_013.png"
-    )
     img2yuv(
         ffmpeg,
         startFrame,
         frames,
-        rendered_image_pattern,
+        getRenderFramePattern(seq, qp),
         getRenderYuvPath(seq, qp),
         renderLogFile,
     )

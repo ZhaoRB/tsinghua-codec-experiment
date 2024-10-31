@@ -2,35 +2,43 @@ import os
 
 # =================== parameters =================
 # The run scripts are executed in multiple processes, max_workers set the maximum number of processes
-max_workers = 6
+max_workers = 4
 
-frames = 10
+frames = 300
 startFrame = 0
 
 viewNum = 5
-centerViewIdx = 13
+centerImageToConvert = "image_013.png"
 
 paramFileName = "param.cfg"
 calibFileName = "calib.xml"
 
 encoder = "./executable/EncoderAppStatic"
 ffmpeg = "./executable/ffmpeg"
-rlc = "./executable/RLC-BoxFuji"
+# rlc = "./executable/RLC-BoxFuji"
+# rlc = "./executable/RLC-TSPC"
 
 inputFolder = "/home/data/mpeg148-sequences"
 outputFolder = "/home/data/mpeg148-anchor"
 configFolder = "./config"
 
 seqs = [
-    # "Boys",
-    # "MiniGarden",
-    # "HandTools",
-    # "NewMotherboard",
-    # "Matryoshka",
-    "NagoyaFujita",
-    # "NagoyaOrigami",
-    # "Boxer-IrishMan-Gladiator"
+    "Boys",
+    "MiniGarden2",
+    "HandTools",
+    "Motherboard2",
+    "Matryoshka",
 ]
+rlc = "./executable/RLC-TSPC"
+# seqs = [
+#     "NagoyaFujita",
+# ]
+# rlc = "./executable/RLC-BoxFuji"
+# seqs = [
+#     "NagoyaOrigami",
+# ]
+# rlc = "./executable/RLC-Origami"
+
 # qps = {
 #     "Boys": [32, 36, 40, 44, 48, 52],
 #     "HandTools": [54, 50, 46, 42, 38, 34],
@@ -39,17 +47,16 @@ seqs = [
 #     "Matryoshka": [40, 44, 48, 52, 56, 60],
 #     "NagoyaFujita": [24, 28, 32, 36, 40, 44, 48, 52],
 #     "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
-#     "Boxer-IrishMan-Gladiator": [32, 32, 40, 44, 48, 52]
+#     "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52]
 # }
 qps = {
     "Boys": [32, 36, 40, 44, 48, 52],
     "HandTools": [54, 50, 46, 42, 38, 34],
-    "NewMotherboard": [54, 50, 46, 42, 38, 34],
-    "MiniGarden": [54, 50, 46, 42, 38, 34],
+    "Motherboard2": [54, 50, 46, 42, 38, 34],
+    "MiniGarden2": [54, 50, 46, 42, 38, 34],
     "Matryoshka": [40, 44, 48, 52, 56, 60],
-    "NagoyaFujita": [44],
+    "NagoyaFujita": [24, 28, 32, 36, 40, 44, 48, 52],
     "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
-    "Boxer-IrishMan-Gladiator": [32, 32, 40, 44, 48, 52],
 }
 
 # ===================== you only need to adjust the parameters above =================
@@ -59,8 +66,8 @@ qps = {
 resolutions = {
     "Boys": [3976, 2956],
     "HandTools": [4036, 3064],
-    "NewMotherboard": [4036, 3064],
-    "MiniGarden": [4036, 3064],
+    "Motherboard2": [4036, 3064],
+    "MiniGarden2": [4036, 3064],
     "Matryoshka": [4040, 3064],
     "NagoyaFujita": [2048, 2048],
     "NagoyaOrigami": [2048, 2048],
@@ -70,16 +77,13 @@ resolutions = {
 rendered_resolutions = {
     "Boys": [1348, 980],
     "HandTools": [1370, 1004],
-    "NewMotherboard": [1370, 1004],
-    "MiniGarden": [1370, 1004],
+    "Motherboard2": [1370, 1004],
+    "MiniGarden2": [1370, 1004],
     "Matryoshka": [1370, 1004],
-    "NagoyaFujita": [888, 904],
-    "NagoyaOrigami": [888, 904],
-    "Boxer-IrishMan-Gladiator": [3840, 2160],  # todo: fix
+    "NagoyaFujita": [740, 732],
+    "NagoyaOrigami": [740, 732],
+    "Boxer-IrishMan-Gladiator": [1338, 746],
 }
-
-# todo: two functions: getRawResolution(seq); getRenderedResolution(seq);
-
 
 # =================== set file names and make dirs =================
 imagePattern = "Image%03d.png"
@@ -144,10 +148,10 @@ def getRenderFramePattern(seq, qp):
 
 
 # convert rendered output images to yuv
-def getRenderYuvPath(seq, qp, viewIdx=centerViewIdx):
+def getRenderYuvPath(seq, qp):
     return os.path.join(
         renderOutputFolder,
-        f"{seq}_view{viewIdx}_{rendered_resolutions[seq][0]}x{rendered_resolutions[seq][1]}_qp{qp}_{frames}frames_8bit_yuv420.yuv",
+        f"{seq}_{rendered_resolutions[seq][0]}x{rendered_resolutions[seq][1]}_qp{qp}_{frames}frames_8bit_yuv420.yuv",
     )
 
 
@@ -175,7 +179,7 @@ def getBaseRenderYuvPath(seq):
     )
 
 
-def getRenderLogFilePath(seq):
+def getBaseRenderLogFilePath(seq):
     path = os.path.join(renderBaseOutputFolder, f"{seq}.log")
     open(path, "w").close()
     return path

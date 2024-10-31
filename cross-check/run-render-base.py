@@ -1,4 +1,3 @@
-import os
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
@@ -7,20 +6,20 @@ from tasks.format_convert import img2yuv
 from tasks.render import rlc_render
 
 
-def run_task(seq, qp):
-    print(f"Starting task for {seq} with QP {qp}...")
+def run_task(seq):
+    print(f"Starting task for {seq} base ...")
     start_time = time.time()  # Record start time
 
     # ========================= start =========================
     # 3. rlc render
     rlc_cfg_path, calib_path = getRenderConfigPath(seq)
-    renderLogFile = getRenderLogFilePath(seq, qp)
+    renderLogFile = getBaseRenderLogFilePath(seq)
 
     rlc_render(
         rlc,
         rlc_cfg_path,
-        getRawImagePattern(seq, qp),
-        getRenderFramePattern(seq, qp),
+        getRawImagePattern(seq),
+        getBaseRenderFramePattern(seq),
         calib_path,
         startFrame,
         frames,
@@ -33,8 +32,8 @@ def run_task(seq, qp):
         ffmpeg,
         startFrame,
         frames,
-        getRenderFramePattern(seq, qp),
-        getRenderYuvPath(seq, qp),
+        os.path.join(getBaseRenderFramePattern(seq), centerImageToConvert),
+        getBaseRenderYuvPath(seq),
         renderLogFile,
     )
 
@@ -45,15 +44,14 @@ def run_task(seq, qp):
     hours, remainder = divmod(duration, 3600)
     minutes, seconds = divmod(remainder, 60)
     print(
-        f"Task for {seq} with QP {qp} completed in {int(hours)}h {int(minutes)}m {seconds:.2f}s."
+        f"Task for {seq} base completed in {int(hours)}h {int(minutes)}m {seconds:.2f}s."
     )
 
 
 with ProcessPoolExecutor(max_workers=max_workers) as executor:
     futures = []
     for seq in seqs:
-        for qp in qps[seq]:
-            futures.append(executor.submit(run_task, seq, qp))
+        futures.append(executor.submit(run_task, seq))
 
     for future in as_completed(futures):
         try:
