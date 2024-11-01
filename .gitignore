@@ -11,8 +11,4 @@ sample
 
 docker/
 
-config/
-
 cfg/
-
-executable

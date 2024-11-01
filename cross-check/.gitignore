@@ -1,5 +1,7 @@
-executable
-
 temp
 
 str.bin
+
+executable/DecoderAppStatic
+executable/EncoderAppStatic
+executable/ffmpeg
