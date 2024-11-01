@@ -22,22 +22,25 @@ inputFolder = "/workspace/zrb/data/MPEG148-Sequences"
 outputFolder = "/workspace/zrb/data/mpeg148-anchor"
 configFolder = "./config"
 
-# seqs = [
-#     "Boys",
-#     "MiniGarden2",
-#     "HandTools",
-#     "Motherboard2",
-#     "Matryoshka",
-# ]
-# rlc = "./executable/RLC-TSPC"
+inputFolder = "/home/data/mpeg148-sequences"
+outputFolder = "/home/data/mpeg148-anchor"
+
+# outputFolder = "/data/back-up/1031-render-backup"
+
+seqs = [
+    # "Boys",
+    # "MiniGarden2",
+    # "HandTools",
+    "Motherboard2",
+    # "Matryoshka",
+]
+rlc = "./executable/RLC-TSPC"
 # seqs = [
 #     "NagoyaFujita",
 # ]
 # rlc = "./executable/RLC-BoxFuji"
-seqs = [
-    "NagoyaOrigami",
-]
-rlc = "./executable/RLC-Origami"
+# seqs = ["NagoyaFujita"]
+# rlc = "./executable/RLC-Origami"
 
 qps = {
     "Boys": [36, 40, 44, 48],
@@ -79,6 +82,7 @@ rendered_resolutions = {
 # =================== set file names and make dirs =================
 imagePattern = "Image%03d.png"
 framePattern = "Frame#%03d"
+renderedImagePattern = "image_%03d.png"
 
 
 # =================== raw image & yuv =================
@@ -177,8 +181,14 @@ def getBaseRenderLogFilePath(seq):
 
 
 # =================== render subjective =================
-renderSubjectiveOutputFolder = os.path.join(outputFolder, "render-subjective")
+renderSubjectiveOutputFolder = "../../render-subjective"
 os.makedirs(renderSubjectiveOutputFolder, exist_ok=True)
+
+
+def getSubjectiveInputPattern(seq, qp):
+    return os.path.join(
+        renderOutputFolder, f"{seq}_qp{qp}", framePattern, renderedImagePattern
+    )
 
 
 def getSubjectiveRenderYuvPath(seq, qp):
@@ -189,8 +199,12 @@ def getSubjectiveRenderYuvPath(seq, qp):
 
 
 # =================== render subjective base =================
-renderSubjectiveBaseOutputFolder = os.path.join(outputFolder, "render-subjective-base")
+renderSubjectiveBaseOutputFolder = "../../render-subjective-base"
 os.makedirs(renderSubjectiveBaseOutputFolder, exist_ok=True)
+
+
+def getSubjectiveBaseInputPattern(seq):
+    return os.path.join(renderBaseOutputFolder, seq, framePattern, renderedImagePattern)
 
 
 def getSubjectiveBaseRenderYuvPath(seq):
