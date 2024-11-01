@@ -2,7 +2,7 @@ import os
 
 # =================== parameters =================
 # The run scripts are executed in multiple processes, max_workers set the maximum number of processes
-max_workers = 4
+max_workers = 32
 
 frames = 300
 startFrame = 0
@@ -18,45 +18,36 @@ ffmpeg = "./executable/ffmpeg"
 # rlc = "./executable/RLC-BoxFuji"
 # rlc = "./executable/RLC-TSPC"
 
-inputFolder = "/home/data/mpeg148-sequences"
-outputFolder = "/home/data/mpeg148-anchor"
+inputFolder = "/workspace/zrb/data/MPEG148-Sequences"
+outputFolder = "/workspace/zrb/data/mpeg148-anchor"
 configFolder = "./config"
 
-seqs = [
-    "Boys",
-    "MiniGarden2",
-    "HandTools",
-    "Motherboard2",
-    "Matryoshka",
-]
-rlc = "./executable/RLC-TSPC"
+# seqs = [
+#     "Boys",
+#     "MiniGarden2",
+#     "HandTools",
+#     "Motherboard2",
+#     "Matryoshka",
+# ]
+# rlc = "./executable/RLC-TSPC"
 # seqs = [
 #     "NagoyaFujita",
 # ]
 # rlc = "./executable/RLC-BoxFuji"
-# seqs = [
-#     "NagoyaOrigami",
-# ]
-# rlc = "./executable/RLC-Origami"
+seqs = [
+    "NagoyaOrigami",
+]
+rlc = "./executable/RLC-Origami"
 
-# qps = {
-#     "Boys": [32, 36, 40, 44, 48, 52],
-#     "HandTools": [54, 50, 46, 42, 38, 34],
-#     "NewMotherboard": [54, 50, 46, 42, 38, 34],
-#     "MiniGarden": [54, 50, 46, 42, 38, 34],
-#     "Matryoshka": [40, 44, 48, 52, 56, 60],
-#     "NagoyaFujita": [24, 28, 32, 36, 40, 44, 48, 52],
-#     "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
-#     "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52]
-# }
 qps = {
-    "Boys": [32, 36, 40, 44, 48, 52],
-    "HandTools": [54, 50, 46, 42, 38, 34],
-    "Motherboard2": [54, 50, 46, 42, 38, 34],
-    "MiniGarden2": [54, 50, 46, 42, 38, 34],
+    "Boys": [36, 40, 44, 48],
+    "HandTools": [54, 50, 46, 42],
+    "Motherboard2": [54, 50, 46, 42],
+    "MiniGarden2": [54, 50, 46, 42, 38],
     "Matryoshka": [40, 44, 48, 52, 56, 60],
-    "NagoyaFujita": [24, 28, 32, 36, 40, 44, 48, 52],
-    "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
+    "NagoyaFujita": [32, 36, 40, 44, 48, 52],
+    "NagoyaOrigami": [48, 52],
+    "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52],
 }
 
 # ===================== you only need to adjust the parameters above =================

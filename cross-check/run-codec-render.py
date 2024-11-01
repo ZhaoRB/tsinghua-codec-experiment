@@ -60,7 +60,7 @@ def run_task(seq, qp):
         ffmpeg,
         startFrame,
         frames,
-        getRenderFramePattern(seq, qp),
+        os.path.join(getRenderFramePattern(seq, qp), centerImageToConvert),
         getRenderYuvPath(seq, qp),
         renderLogFile,
     )
