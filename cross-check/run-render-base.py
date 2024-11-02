@@ -7,7 +7,7 @@ from tasks.render import rlc_render
 
 
 def run_task(seq):
-    print(f"Starting task for {seq} base ...")
+    print(f"Starting render for {seq} base ...")
     start_time = time.time()  # Record start time
 
     # ========================= start =========================

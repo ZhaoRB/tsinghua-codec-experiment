@@ -8,7 +8,7 @@ from tasks.format_convert import yuv2img
 
 
 def run_task(seq, qp):
-    print(f"Starting task for {seq} with QP {qp}...")
+    print(f"Starting codec for {seq} with QP {qp}...")
     start_time = time.time()  # Record start time
 
     # ========================= start =========================

@@ -2,7 +2,7 @@ import os
 
 # =================== parameters =================
 # The run scripts are executed in multiple processes, max_workers set the maximum number of processes
-max_workers = 32
+max_workers = 24
 
 frames = 300
 startFrame = 0
@@ -22,34 +22,34 @@ inputFolder = "/workspace/zrb/data/MPEG148-Sequences"
 outputFolder = "/workspace/zrb/data/mpeg148-anchor"
 configFolder = "./config"
 
-inputFolder = "/home/data/mpeg148-sequences"
-outputFolder = "/home/data/mpeg148-anchor"
+# inputFolder = "/home/data/mpeg148-sequences"
+# outputFolder = "/home/data/mpeg148-anchor"
 
 # outputFolder = "/data/back-up/1031-render-backup"
 
 seqs = [
-    # "Boys",
-    # "MiniGarden2",
+    "Boys",
+    "MiniGarden2",
     # "HandTools",
-    "Motherboard2",
-    # "Matryoshka",
+    # "Motherboard2",
+    "Matryoshka",
 ]
 rlc = "./executable/RLC-TSPC"
 # seqs = [
 #     "NagoyaFujita",
 # ]
 # rlc = "./executable/RLC-BoxFuji"
-# seqs = ["NagoyaFujita"]
+# seqs = ["NagoyaOrigami"]
 # rlc = "./executable/RLC-Origami"
 
 qps = {
-    "Boys": [36, 40, 44, 48],
-    "HandTools": [54, 50, 46, 42],
-    "Motherboard2": [54, 50, 46, 42],
-    "MiniGarden2": [54, 50, 46, 42, 38],
+    "Boys": [36, 40, 44, 48, 52],
+    "HandTools": [42, 46, 50, 54],
+    "MiniGarden2": [34, 38, 42, 46, 50, 54],
+    "Motherboard2": [38, 42, 46, 50, 54],
     "Matryoshka": [40, 44, 48, 52, 56, 60],
     "NagoyaFujita": [32, 36, 40, 44, 48, 52],
-    "NagoyaOrigami": [48, 52],
+    "NagoyaOrigami": [32, 36, 40, 44],
     "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52],
 }
 
@@ -75,7 +75,7 @@ rendered_resolutions = {
     "MiniGarden2": [1370, 1004],
     "Matryoshka": [1370, 1004],
     "NagoyaFujita": [740, 732],
-    "NagoyaOrigami": [740, 732],
+    "NagoyaOrigami": [706, 692],
     "Boxer-IrishMan-Gladiator": [1338, 746],
 }
 
