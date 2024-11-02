@@ -28,7 +28,7 @@ configFolder = "./config"
 # outputFolder = "/data/back-up/1031-render-backup"
 
 seqs = [
-    # "Boys",
+    "Boys",
     "MiniGarden2",
     "HandTools",
     "Motherboard2",
@@ -43,22 +43,14 @@ rlc = "./executable/RLC-TSPC"
 # rlc = "./executable/RLC-Origami"
 
 qps = {
-    "Boys": [36, 40, 44, 48, 52],
-    "HandTools": [42, 46, 50, 54],
+    "Boys": [48, 52],
+    "HandTools": [38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
-    "Motherboard2": [38, 42, 46, 50, 54],
+    "Motherboard2": [34, 38, 42, 46, 50, 54],
     "Matryoshka": [40, 44, 48, 52, 56, 60],
     "NagoyaFujita": [32, 36, 40, 44, 48, 52],
-    "NagoyaOrigami": [32, 36, 40, 44],
-}
-qps = {
-    "Boys": [36, 40, 44, 48, 52],
-    "HandTools": [50, 54],
-    "MiniGarden2": [50, 54],
-    "Motherboard2": [50, 54],
-    "Matryoshka": [52, 56, 60],
-    "NagoyaFujita": [32, 36, 40, 44, 48, 52],
-    "NagoyaOrigami": [32, 36, 40, 44],
+    "NagoyaOrigami": [28, 44, 52],
+    # "NagoyaOrigami": [48],
 }
 
 # ===================== you only need to adjust the parameters above =================
