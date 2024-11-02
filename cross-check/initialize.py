@@ -28,10 +28,10 @@ configFolder = "./config"
 # outputFolder = "/data/back-up/1031-render-backup"
 
 seqs = [
-    "Boys",
+    # "Boys",
     "MiniGarden2",
-    # "HandTools",
-    # "Motherboard2",
+    "HandTools",
+    "Motherboard2",
     "Matryoshka",
 ]
 rlc = "./executable/RLC-TSPC"
@@ -50,7 +50,15 @@ qps = {
     "Matryoshka": [40, 44, 48, 52, 56, 60],
     "NagoyaFujita": [32, 36, 40, 44, 48, 52],
     "NagoyaOrigami": [32, 36, 40, 44],
-    "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52],
+}
+qps = {
+    "Boys": [36, 40, 44, 48, 52],
+    "HandTools": [50, 54],
+    "MiniGarden2": [50, 54],
+    "Motherboard2": [50, 54],
+    "Matryoshka": [52, 56, 60],
+    "NagoyaFujita": [32, 36, 40, 44, 48, 52],
+    "NagoyaOrigami": [32, 36, 40, 44],
 }
 
 # ===================== you only need to adjust the parameters above =================
@@ -212,3 +220,28 @@ def getSubjectiveBaseRenderYuvPath(seq):
         renderBaseOutputFolder,
         f"{seq}_1920x1080_{frames}frames_8bit_yuv420.yuv",
     )
+
+
+# =================== summary =================
+csvFileName = os.path.join(outputFolder, "summary.csv")
+
+all_seqs = [
+    "Boys",
+    "HandTools",
+    "MiniGarden2",
+    "Motherboard2",
+    "Matryoshka",
+    "NagoyaFujita",
+    "NagoyaOrigami",
+]
+
+all_qps = {
+    "Boys": [36, 40, 44, 48, 52],
+    "HandTools": [34, 38, 42, 46, 50, 54],
+    "MiniGarden2": [34, 38, 42, 46, 50, 54],
+    "Motherboard2": [34, 38, 42, 46, 50, 54],
+    "Matryoshka": [40, 44, 48, 52, 56, 60],
+    "NagoyaFujita": [32, 36, 40, 44, 48, 52],
+    "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
+    # "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52],
+}

@@ -1,6 +1,15 @@
 import re
 
 
+def if_codec_finish(logFile):
+    target_line = "Total Frames |   Bitrate     Y-PSNR    U-PSNR    V-PSNR    YUV-PSNR"
+    with open(logFile, "r") as file:
+        for line in file:
+            if target_line in line:
+                return True
+    return False
+
+
 def extract_codec_info(logFilePath):
 
     # 读取log文件内容
