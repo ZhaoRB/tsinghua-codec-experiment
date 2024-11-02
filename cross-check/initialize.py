@@ -189,7 +189,7 @@ def getBaseRenderLogFilePath(seq):
 
 
 # =================== render subjective =================
-renderSubjectiveOutputFolder = "../../render-subjective"
+renderSubjectiveOutputFolder = "../../mpeg148-anchor/render-subjective"
 os.makedirs(renderSubjectiveOutputFolder, exist_ok=True)
 
 
@@ -207,7 +207,7 @@ def getSubjectiveRenderYuvPath(seq, qp):
 
 
 # =================== render subjective base =================
-renderSubjectiveBaseOutputFolder = "../../render-subjective-base"
+renderSubjectiveBaseOutputFolder = "../../mpeg148-anchor/render-subjective-base"
 os.makedirs(renderSubjectiveBaseOutputFolder, exist_ok=True)
 
 
