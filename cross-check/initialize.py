@@ -4,7 +4,7 @@ import os
 # The run scripts are executed in multiple processes, max_workers set the maximum number of processes
 max_workers = 24
 
-frames = 300
+frames = 1
 startFrame = 0
 
 viewNum = 5
@@ -34,7 +34,7 @@ seqs = [
     "Motherboard2",
     "Matryoshka",
 ]
-rlc = "./executable/RLC-TSPC"
+rlc = "./executable/RLC-TSPC-smaller"
 # seqs = [
 #     "NagoyaFujita",
 # ]
