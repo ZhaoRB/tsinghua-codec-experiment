@@ -35,22 +35,21 @@ seqs = [
     "Matryoshka",
 ]
 rlc = "./executable/RLC-TSPC-smaller"
-# seqs = [
-#     "NagoyaFujita",
-# ]
-# rlc = "./executable/RLC-BoxFuji"
+seqs = [
+    "NagoyaFujita",
+]
+rlc = "./executable/RLC-BoxFuji"
 # seqs = ["NagoyaOrigami"]
 # rlc = "./executable/RLC-Origami"
 
 qps = {
-    "Boys": [40, 44, 48, 52],
+    "Boys": [36, 40, 44, 48, 52],
     "HandTools": [38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
     "Motherboard2": [34, 38, 42, 46, 50, 54],
     "Matryoshka": [40, 44, 48, 52, 56, 60],
     "NagoyaFujita": [32, 36, 40, 44, 48, 52],
-    "NagoyaOrigami": [28, 44, 52],
-    # "NagoyaOrigami": [48],
+    "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
 }
 
 # ===================== you only need to adjust the parameters above =================
@@ -186,7 +185,7 @@ def getBaseRenderLogFilePath(seq):
 
 
 # =================== render subjective =================
-renderSubjectiveOutputFolder = "../../mpeg148-anchor/render-subjective"
+renderSubjectiveOutputFolder = "../../render-subjective"
 os.makedirs(renderSubjectiveOutputFolder, exist_ok=True)
 
 
@@ -199,12 +198,12 @@ def getSubjectiveInputPattern(seq, qp):
 def getSubjectiveRenderYuvPath(seq, qp):
     return os.path.join(
         renderSubjectiveOutputFolder,
-        f"{seq}_qp{qp}_1920x1080_{frames}frames_8bit_yuv420.yuv",
+        f"{seq}_qp{qp}_1920x1080_{frames}frames_8bit_yuv420p.yuv",
     )
 
 
 # =================== render subjective base =================
-renderSubjectiveBaseOutputFolder = "../../mpeg148-anchor/render-subjective-base"
+renderSubjectiveBaseOutputFolder = "../../render-subjective-base"
 os.makedirs(renderSubjectiveBaseOutputFolder, exist_ok=True)
 
 
@@ -214,8 +213,8 @@ def getSubjectiveBaseInputPattern(seq):
 
 def getSubjectiveBaseRenderYuvPath(seq):
     return os.path.join(
-        renderBaseOutputFolder,
-        f"{seq}_1920x1080_{frames}frames_8bit_yuv420.yuv",
+        renderSubjectiveBaseOutputFolder,
+        f"{seq}_1920x1080_{frames}frames_8bit_yuv420p.yuv",
     )
 
 

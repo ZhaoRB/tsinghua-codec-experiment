@@ -1,4 +1,3 @@
-import os
 import subprocess
 
 from initialize import *
@@ -6,16 +5,14 @@ from initialize import *
 
 def run_task(seq):
     raytrixSequences = ["NagoyaFujita", "NagoyaOrigami"]
-    pattern = 5 if seq in raytrixSequences else 6
+    pattern = 7 if seq in raytrixSequences else 6
 
     subprocess.run(
         [
             "python",
             "./tasks/pose_trace_generation.py",
             getSubjectiveBaseInputPattern(seq),
-            os.path.join(
-                renderSubjectiveBaseOutputFolder, f"{seq}_1920x1080_8bit_yuv420p.yuv"
-            ),
+            getSubjectiveBaseRenderYuvPath(seq),
             "-p",
             f"{pattern}",
             "-pad",
