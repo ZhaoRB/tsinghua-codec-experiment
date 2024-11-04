@@ -2,9 +2,9 @@ import os
 
 # =================== parameters =================
 # The run scripts are executed in multiple processes, max_workers set the maximum number of processes
-max_workers = 24
+max_workers = 32
 
-frames = 1
+frames = 300
 startFrame = 0
 
 viewNum = 5
@@ -43,7 +43,7 @@ rlc = "./executable/RLC-TSPC-smaller"
 # rlc = "./executable/RLC-Origami"
 
 qps = {
-    "Boys": [48, 52],
+    "Boys": [40, 44, 48, 52],
     "HandTools": [38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
     "Motherboard2": [34, 38, 42, 46, 50, 54],
@@ -69,11 +69,16 @@ resolutions = {
 }
 
 rendered_resolutions = {
-    "Boys": [1348, 980],
-    "HandTools": [1370, 1004],
-    "Motherboard2": [1370, 1004],
-    "MiniGarden2": [1370, 1004],
-    "Matryoshka": [1370, 1004],
+    # "Boys": [1348, 980],
+    "Boys": [1098, 800],
+    # "HandTools": [1370, 1004],
+    "HandTools": [1116, 820],
+    # "Motherboard2": [1370, 1004],
+    "Motherboard2": [1116, 820],
+    # "MiniGarden2": [1370, 1004],
+    "MiniGarden2": [1116, 820],
+    # "Matryoshka": [1370, 1004],
+    "Matryoshka": [1116, 820],
     "NagoyaFujita": [740, 732],
     "NagoyaOrigami": [706, 692],
     "Boxer-IrishMan-Gladiator": [1338, 746],
