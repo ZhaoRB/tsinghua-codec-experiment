@@ -27,6 +27,7 @@ def run_task(seq, qp):
         frames,
         qp,
         codecLogFile,
+        getBitstreamPath(seq, qp),
     )
 
     # 2. ffmpeg yuv2img

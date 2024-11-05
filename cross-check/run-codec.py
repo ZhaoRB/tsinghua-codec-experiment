@@ -25,6 +25,7 @@ def run_task(seq, qp):
         frames,
         qp,
         codecLogFile,
+        getBitstreamPath(seq, qp),
     )
 
     yuv2img(

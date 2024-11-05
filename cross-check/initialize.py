@@ -35,12 +35,10 @@ seqs = [
     "Matryoshka",
 ]
 rlc = "./executable/RLC-TSPC-smaller"
-# seqs = [
-#     "NagoyaFujita",
-# ]
+# seqs = ["NagoyaFujita"]
 # rlc = "./executable/RLC-BoxFuji"
-# seqs = ["NagoyaOrigami"]
-# rlc = "./executable/RLC-Origami"
+seqs = ["NagoyaOrigami"]
+rlc = "./executable/RLC-Origami"
 
 qps = {
     "Boys": [36, 40, 44, 48, 52],
@@ -113,6 +111,10 @@ def getCodecYuvPath(seq, qp):
         codecOutputFolder,
         f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_qp{qp}_{frames}frames_8bit_yuv420.yuv",
     )
+
+
+def getBitstreamPath(seq, qp):
+    return os.path.join(codecOutputFolder, f"{seq}_qp{qp}_bitstream")
 
 
 # yuv2img after codec
