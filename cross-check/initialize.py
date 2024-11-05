@@ -104,6 +104,9 @@ def getRawImagePattern(seq):
 codecOutputFolder = os.path.join(outputFolder, "codec")
 os.makedirs(codecOutputFolder, exist_ok=True)
 
+codecBitstreamFolder = os.path.join(outputFolder, "codec-bitstream")
+os.makedirs(codecBitstreamFolder, exist_ok=True)
+
 
 # codec output
 def getCodecYuvPath(seq, qp):
@@ -114,7 +117,7 @@ def getCodecYuvPath(seq, qp):
 
 
 def getBitstreamPath(seq, qp):
-    return os.path.join(codecOutputFolder, f"{seq}_qp{qp}_bitstream")
+    return os.path.join(codecBitstreamFolder, f"{seq}_qp{qp}_bitstream")
 
 
 # yuv2img after codec
