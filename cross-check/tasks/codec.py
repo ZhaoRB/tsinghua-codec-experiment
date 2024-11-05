@@ -5,7 +5,6 @@ import subprocess
 def vvc_codec(
     Encoder,
     input_yuv,
-    # output_bitstream,
     output_yuv,
     cfgFile,
     width,
@@ -13,6 +12,7 @@ def vvc_codec(
     frames,
     qp,
     logfilePath,
+    output_bitstream,
 ):
     # Configure logging to write to logfilePath
     logging.basicConfig(
@@ -47,8 +47,8 @@ def vvc_codec(
                     f"--QP={qp}",
                     "-i",
                     input_yuv,
-                    # "-b",
-                    # output_bitstream,  # Bitstream output file name
+                    "-b",
+                    output_bitstream,  # Bitstream output file name
                     "-o",
                     output_yuv,  # Reconstructed YUV output file name
                 ],

@@ -8,25 +8,25 @@ from utils.psnr import compute_psnr_for_yuv
 
 summaryLogFile = os.path.join(summaryOutputFolder, "summary.log")
 
+headers = [
+    "Sequence Name",
+    "QP",
+    "Bitrate",
+    "LLPSNR_Y",
+    "LLPSNR_U",
+    "LLPSNR_V",
+    "MVPSNR_Y",
+    "MVPSNR_U",
+    "MVPSNR_V",
+]
+
 
 def run_summary(seq):
     seqCsvFileName = getSeqCsvFileName(seq)
 
     with open(seqCsvFileName, mode="w", newline="") as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(
-            [
-                "Sequence Name",
-                "QP",
-                "Bitrate",
-                "LLPSNR_Y",
-                "LLPSNR_U",
-                "LLPSNR_V",
-                "MVPSNR_Y",
-                "MVPSNR_U",
-                "MVPSNR_V",
-            ]
-        )
+        writer.writerow(headers)
 
         for i in range(viewNum * viewNum):
             index = i + 1
@@ -42,6 +42,8 @@ def run_summary(seq):
             )
 
         for qp in qps[seq]:
+            print(f"Start summary for {seq} QP {qp}...")
+            
             # 1. get bitrate and llpsnr from vvc logfile
             logfile = os.path.join(codecOutputFolder, f"{seq}_qp{qp}.log")
 
@@ -106,19 +108,7 @@ def run_summary(seq):
 def mergeAllCsvFiles():
     with open(csvFileNameAllSeqs, mode="w", newline="") as csvfile:
         writer = csv.writer(csvfile)
-        writer.writerow(
-            [
-                "Sequence Name",
-                "QP",
-                "Bitrate",
-                "LLPSNR_Y",
-                "LLPSNR_U",
-                "LLPSNR_V",
-                "MVPSNR_Y",
-                "MVPSNR_U",
-                "MVPSNR_V",
-            ]
-        )
+        writer.writerow(headers)
 
     for seq in seqs:
         if os.path.exists(getSeqCsvFileName(seq)):
@@ -133,4 +123,4 @@ if __name__ == "__main__":
     for seq in seqs:
         run_summary(seq)
 
-    mergeAllCsvFiles()
+    # mergeAllCsvFiles()

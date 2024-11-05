@@ -2,6 +2,7 @@ import csv
 import os
 
 import matplotlib.pyplot as plt
+from initialize import *
 
 # 定义常量，表示列索引
 X_AXIS_QP = 0
@@ -24,7 +25,7 @@ def get_figure_name(seq, xType, yType):
 def draw_rd_curve(csvFilePath, xType, yType, figurePath):
     with open(csvFilePath, "r") as f:
         csv_data = csv.reader(f)
-        header = next(csv_data)
+        next(csv_data)
 
         x_data = []
         y_data = []
@@ -68,11 +69,10 @@ def draw_rd_curve(csvFilePath, xType, yType, figurePath):
 
 
 if __name__ == "__main__":
-    baseFolder = "/home/data/find-qp/summary"
-    sequences = ["Boys", "HandTools", "NewMotherboard", "MiniGarden"]
-    sequences = ["Matryoshka", "NagoyaFujita", "NagoyaOrigami"]
-
-    for seq in sequences:
-        csvFilePath = os.path.join(baseFolder, f"{seq}_summary.csv")
-        draw_rd_curve(csvFilePath, X_AXIS_QP, Y_AXIS_MVPSNR, baseFolder)
+    for seq in seqs:
+        csvFilePath = os.path.join(summaryOutputFolder, f"{seq}_summary.csv")
+        if not os.path.exists(csvFilePath):
+            print(f"csv file does not exist: {csvFilePath}")
+            continue
+        draw_rd_curve(csvFilePath, X_AXIS_BITRATE, Y_AXIS_MVPSNR, summaryOutputFolder)
         # draw_rd_curve(csvFilePath, X_AXIS_BITRATE, Y_AXIS_MVPSNR, baseFolder)

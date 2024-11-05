@@ -30,21 +30,22 @@ configFolder = "./config"
 seqs = [
     "Boys",
     "MiniGarden2",
-    "HandTools",
+    # "HandTools",
     "Motherboard2",
     "Matryoshka",
 ]
 rlc = "./executable/RLC-TSPC-smaller"
-seqs = [
-    "NagoyaFujita",
-]
-rlc = "./executable/RLC-BoxFuji"
+# seqs = [
+#     "NagoyaFujita",
+# ]
+# rlc = "./executable/RLC-BoxFuji"
 # seqs = ["NagoyaOrigami"]
 # rlc = "./executable/RLC-Origami"
 
 qps = {
     "Boys": [36, 40, 44, 48, 52],
     "HandTools": [38, 42, 46, 50, 54],
+    # "HandTools": [34],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
     "Motherboard2": [34, 38, 42, 46, 50, 54],
     "Matryoshka": [40, 44, 48, 52, 56, 60],
@@ -224,7 +225,8 @@ os.makedirs(summaryOutputFolder, exist_ok=True)
 
 csvFileNameAllSeqs = os.path.join(summaryOutputFolder, "all_summary.csv")
 
-tempYuvFolder = os.path.join(outputFolder, "temp_yuv")
+tempYuvFolder = os.path.join(summaryOutputFolder, "temp_yuv")
+os.makedirs(tempYuvFolder, exist_ok=True)
 
 
 def getSummaryTempBaseYuv(seq, index):
@@ -259,3 +261,6 @@ def getSeqCsvFileName(seq):
 #     "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
 #     # "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52],
 # }
+
+
+# =================== visualize =================
