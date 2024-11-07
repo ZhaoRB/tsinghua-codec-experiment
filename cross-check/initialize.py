@@ -1,7 +1,7 @@
 import os
 
 # =================== parameters =================
-max_workers = 32  # run-xxx.py 脚本执行的最大进程数
+max_workers = 48  # run-xxx.py 脚本执行的最大进程数
 
 frames = 300  # 要处理（如codec，render）的帧数
 startFrame = 0  # 起始帧
@@ -16,8 +16,9 @@ encoder = "./executable/EncoderAppStatic"
 ffmpeg = "./executable/ffmpeg"
 rlc = "./executable/RLC40"
 
-inputFolder = "/workspace/zrb/data/MPEG148-Sequences" # 输入文件夹路径
-outputFolder = "/workspace/zrb/data/mpeg148-anchor" # 输出文件夹路径
+inputFolder = "/workspace/zrb/data/MPEG148-Sequences"  # 输入文件夹路径
+outputFolder = "/workspace/zrb/data/mpeg148-anchor"  # 输出文件夹路径
+configFolder = "./config"
 
 seqs = [
     "Boys",
@@ -30,7 +31,7 @@ seqs = [
 ]
 
 qps = {
-    "Boys": [28, 32, 36, 40, 44, 48],
+    "Boys": [36, 40, 44, 48],
     "HandTools": [34, 38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
     "Motherboard2": [30, 34, 38, 42, 46, 50],
@@ -149,8 +150,8 @@ os.makedirs(renderOutputFolder, exist_ok=True)
 
 
 def getRenderConfigPath(seq):
-    paramPath = os.path.join("./config", seq, paramFileName)
-    calibPath = os.path.join("./config", seq, calibFileName)
+    paramPath = os.path.join(configFolder, seq, paramFileName)
+    calibPath = os.path.join(configFolder, seq, calibFileName)
     return paramPath, calibPath
 
 
