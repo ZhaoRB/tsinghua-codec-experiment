@@ -1,57 +1,66 @@
 import os
 
 # =================== parameters =================
-# The run scripts are executed in multiple processes, max_workers set the maximum number of processes
-max_workers = 32
+max_workers = 32  # run-xxx.py 脚本执行的最大进程数
 
-frames = 300
-startFrame = 0
+frames = 300  # 要处理（如codec，render）的帧数
+startFrame = 0  # 起始帧
 
-viewNum = 5
-centerImageToConvert = "image_013.png"
+viewNum = 5  # 渲染出的视角数
+centerImageToConvert = "image_013.png"  # 中心视角图片名
 
 paramFileName = "param.cfg"
 calibFileName = "calib.xml"
 
 encoder = "./executable/EncoderAppStatic"
 ffmpeg = "./executable/ffmpeg"
-# rlc = "./executable/RLC-BoxFuji"
-# rlc = "./executable/RLC-TSPC"
+rlc = "./executable/RLC40"
 
-inputFolder = "/workspace/zrb/data/MPEG148-Sequences"
-outputFolder = "/workspace/zrb/data/mpeg148-anchor"
-configFolder = "./config"
-
-# inputFolder = "/home/data/mpeg148-sequences"
-# outputFolder = "/home/data/mpeg148-anchor"
-
-# outputFolder = "/data/back-up/1031-render-backup"
+inputFolder = "/workspace/zrb/data/MPEG148-Sequences" # 输入文件夹路径
+outputFolder = "/workspace/zrb/data/mpeg148-anchor" # 输出文件夹路径
 
 seqs = [
     "Boys",
+    "HandTools",
     "MiniGarden2",
-    # "HandTools",
     "Motherboard2",
+    "NagoyaOrigami",
     "Matryoshka",
+    "NagoyaFujita",
 ]
-rlc = "./executable/RLC-TSPC-smaller"
-# seqs = ["NagoyaFujita"]
-# rlc = "./executable/RLC-BoxFuji"
-seqs = ["NagoyaOrigami"]
-rlc = "./executable/RLC-Origami"
 
 qps = {
-    "Boys": [36, 40, 44, 48, 52],
-    "HandTools": [38, 42, 46, 50, 54],
-    # "HandTools": [34],
+    "Boys": [28, 32, 36, 40, 44, 48],
+    "HandTools": [34, 38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
-    "Motherboard2": [34, 38, 42, 46, 50, 54],
-    "Matryoshka": [40, 44, 48, 52, 56, 60],
-    "NagoyaFujita": [32, 36, 40, 44, 48, 52],
-    "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
+    "Motherboard2": [30, 34, 38, 42, 46, 50],
+    "NagoyaOrigami": [28, 32, 36, 40, 44, 48],
+    "Matryoshka": [40, 44, 48, 52],
+    "NagoyaFujita": [36, 40, 44, 48],
 }
 
 # ===================== you only need to adjust the parameters above =================
+
+all_seqs = [
+    "Boys",
+    "HandTools",
+    "MiniGarden2",
+    "Motherboard2",
+    "NagoyaOrigami",
+    "Matryoshka",
+    "NagoyaFujita",
+]
+
+all_qps = {
+    "Boys": [28, 32, 36, 40, 44, 48],
+    "HandTools": [34, 38, 42, 46, 50, 54],
+    "MiniGarden2": [34, 38, 42, 46, 50, 54],
+    "Motherboard2": [30, 34, 38, 42, 46, 50],
+    "NagoyaOrigami": [28, 32, 36, 40, 44, 48],
+    # Matryoshka & Fujita only for objective test
+    "Matryoshka": [40, 44, 48, 52],
+    "NagoyaFujita": [36, 40, 44, 48],
+}
 
 
 # resolutions
@@ -140,8 +149,8 @@ os.makedirs(renderOutputFolder, exist_ok=True)
 
 
 def getRenderConfigPath(seq):
-    paramPath = os.path.join(configFolder, seq, paramFileName)
-    calibPath = os.path.join(configFolder, seq, calibFileName)
+    paramPath = os.path.join("./config", seq, paramFileName)
+    calibPath = os.path.join("./config", seq, calibFileName)
     return paramPath, calibPath
 
 
