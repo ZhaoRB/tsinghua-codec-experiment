@@ -18,6 +18,8 @@ rlc = "./executable/RLC40"
 
 inputFolder = "/workspace/zrb/data/MPEG148-Sequences"  # 输入文件夹路径
 outputFolder = "/workspace/zrb/data/mpeg148-anchor"  # 输出文件夹路径
+os.makedirs(outputFolder, exist_ok=True)
+
 configFolder = "./config"
 
 seqs = [
@@ -30,6 +32,8 @@ seqs = [
     "NagoyaFujita",
 ]
 
+seqs = ["TempleBoatGiantR32", "Boxer-IrishMan-Gladiator"]
+
 qps = {
     "Boys": [36, 40, 44, 48],
     "HandTools": [34, 38, 42, 46, 50, 54],
@@ -38,6 +42,8 @@ qps = {
     "NagoyaOrigami": [28, 32, 36, 40, 44, 48],
     "Matryoshka": [40, 44, 48, 52],
     "NagoyaFujita": [36, 40, 44, 48],
+    "TempleBoatGiantR32": [36, 40, 44, 48],
+    "Boxer-IrishMan-Gladiator": [36, 40, 44, 48],
 }
 
 # ===================== you only need to adjust the parameters above =================
@@ -74,6 +80,7 @@ resolutions = {
     "NagoyaFujita": [2048, 2048],
     "NagoyaOrigami": [2048, 2048],
     "Boxer-IrishMan-Gladiator": [3840, 2160],
+    "TempleBoatGiantR32": [6464, 4852],
 }
 
 rendered_resolutions = {
