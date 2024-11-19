@@ -27,19 +27,31 @@ seqs = [
     "HandTools",
     "MiniGarden2",
     "Motherboard2",
-    "NagoyaOrigami",
     "Matryoshka",
+]
+rlc = "./executable/RLC-TSPC-smaller"
+
+seqs = [
     "NagoyaFujita",
 ]
+rlc = "./executable/RLC-BoxFuji"
 
-seqs = ["TempleBoatGiantR32", "Boxer-IrishMan-Gladiator"]
+seqs = [
+    "NagoyaOrigami",
+]
+rlc = "./executable/RLC-Origami"
+
+
+# seqs = ["TempleBoatGiantR32", "Boxer-IrishMan-Gladiator"]
 
 qps = {
-    "Boys": [36, 40, 44, 48],
+    # subjective + objective
+    "Boys": [28, 32, 36, 40, 44, 48],
     "HandTools": [34, 38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
     "Motherboard2": [30, 34, 38, 42, 46, 50],
     "NagoyaOrigami": [28, 32, 36, 40, 44, 48],
+    # objective
     "Matryoshka": [40, 44, 48, 52],
     "NagoyaFujita": [36, 40, 44, 48],
     "TempleBoatGiantR32": [36, 40, 44, 48],
@@ -209,7 +221,7 @@ def getBaseRenderLogFilePath(seq):
 
 # =================== render subjective =================
 renderSubjectiveOutputFolder = "../../render-subjective"
-os.makedirs(renderSubjectiveOutputFolder, exist_ok=True)
+os.makedirs(os.path.join(outputFolder, "./render-subjective"), exist_ok=True)
 
 
 def getSubjectiveInputPattern(seq, qp):
@@ -227,7 +239,7 @@ def getSubjectiveRenderYuvPath(seq, qp):
 
 # =================== render subjective base =================
 renderSubjectiveBaseOutputFolder = "../../render-subjective-base"
-os.makedirs(renderSubjectiveBaseOutputFolder, exist_ok=True)
+os.makedirs(os.path.join(outputFolder, "./render-subjective-base"), exist_ok=True)
 
 
 def getSubjectiveBaseInputPattern(seq):
