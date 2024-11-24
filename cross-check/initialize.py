@@ -18,6 +18,8 @@ rlc = "./executable/RLC40"
 
 inputFolder = "/workspace/zrb/data/MPEG148-Sequences"  # 输入文件夹路径
 outputFolder = "/workspace/zrb/data/mpeg148-anchor"  # 输出文件夹路径
+inputFolder = "/workspace/zrb/data/new-mpeg148-sequences"  # 输入文件夹路径
+# outputFolder = "/workspace/zrb/data/test"  # 输出文件夹路径
 os.makedirs(outputFolder, exist_ok=True)
 
 configFolder = "./config"
@@ -31,15 +33,15 @@ seqs = [
 ]
 rlc = "./executable/RLC-TSPC-smaller"
 
-seqs = [
-    "NagoyaFujita",
-]
-rlc = "./executable/RLC-BoxFuji"
+# seqs = [
+#     "NagoyaFujita",
+# ]
+# rlc = "./executable/RLC-BoxFuji"
 
-seqs = [
-    "NagoyaOrigami",
-]
-rlc = "./executable/RLC-Origami"
+# seqs = [
+#     "NagoyaOrigami",
+# ]
+# rlc = "./executable/RLC-Origami"
 
 
 # seqs = ["TempleBoatGiantR32", "Boxer-IrishMan-Gladiator"]
