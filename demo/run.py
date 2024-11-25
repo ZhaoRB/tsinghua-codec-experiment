@@ -14,7 +14,7 @@ def getImagePattern(seq, qp: str, type, index=None):
     folderName = "lenslet" if type == LL else "render"
     pattern = "Image%03d.png" if type == LL else "Frame%03d"
 
-    os.makedirs(f"./data/output/{folderName}", exist_ok=True)
+    os.makedirs(f"./data/output/{folderName}/{seq}_{qpStr}", exist_ok=True)
     path = f"./data/output/{folderName}/{seq}_{qpStr}/{pattern}"
 
     if type == MV and index is not None:
@@ -52,7 +52,7 @@ def getRDCurvePath(seq):
     return f"./data/output/summary/{seq}.png"
 
 
-def yuv2img(ffmpeg, seq, width, height, qp: str, type, index=None):
+def yuv2img(ffmpeg, width, height, inputYuv, outputImage):
     subprocess.run(
         [
             ffmpeg,
@@ -61,28 +61,28 @@ def yuv2img(ffmpeg, seq, width, height, qp: str, type, index=None):
             "-pix_fmt",
             "yuv420p",
             "-i",
-            getYuvPath(seq, width, height, seq, type, index),
+            inputYuv,
             "-start_number",
             "0",
-            getImagePattern(seq, qp, type, index),
+            outputImage,
             "-y",
         ]
     )
 
 
-def img2yuv(ffmpeg, seq, width, height, qp: str, type, index=None):
+def img2yuv(ffmpeg, inputImage, outputYuv):
     subprocess.run(
         [
             ffmpeg,
             "-start_number",
             "0",
             "-i",
-            getImagePattern(seq, qp, type, index),
+            inputImage,
             "-vf",
             "format=yuv420p",
             "-frames:v",
             "300",
-            getYuvPath(seq, width, height, qp, type, index),
+            outputYuv,
             "-y",
         ]
     )
@@ -106,15 +106,16 @@ def render(rlc, seq, qp: str):
             file.write(f"{key}\t{value}\n")
 
     subprocess.run([rlc, f"./config/{seq}/param.cfg"])
+    os.rmdir(f"./data/output/")
 
 
 def decode(decoder, seq, width, height, qp: str):
-    with open(getCodecLogPath, "w") as logfile:
+    with open(getCodecLogPath(seq, qp), "w") as logfile:
         subprocess.run(
             [
                 decoder,
                 "-b",
-                f"Boys_qp{qp}.bin",
+                f"./data/input/bitstream/Boys_qp{qp}.bin",
                 "-o",
                 getYuvPath(seq, width, height, qp, LL),
                 "--OutputBitDepth=8",
@@ -147,7 +148,7 @@ def summary(ffmpeg, seq, w, h, qps):
             img2yuv(ffmpeg, seq, w, h, "base", MV, index)
 
         for qp in qps[seq]:
-            logfile = getCodecLogPath(seq, qp)
+            logfile = f"./data/input/encoder-log/{seq}_qp{qp}.log"
             bitrate, llpsnr_y, llpsnr_u, llpsnr_v = extract_codec_info(logfile)
 
             mvpsnr_y, mvpsnr_u, mvpsnr_v = [], [], []
@@ -220,18 +221,31 @@ if __name__ == "__main__":
     decoder = "./executable/DecoderAppStatic"
 
     seqName = "Boys"
-    qps = [28, 32, 36, 40, 44, 48]
+    # qps = [28, 32, 36, 40, 44, 48]
+    qps = ["48"]
     llRes = [3976, 2956]
     mvRes = [1098, 800]
 
     # base
-    yuv2img(ffmpeg, seqName, llRes[0], llRes[1], "base", LL)
+    yuv2img(
+        ffmpeg,
+        llRes[0],
+        llRes[1],
+        f"./data/input/raw-yuv/Boys_3976x2956_300frames_8bit_yuv420.yuv",
+        getImagePattern(seqName, "base", LL),
+    )
     render(rlc40, seqName, "base")
 
     # codec
     for qp in qps:
         decode(decoder, seqName, llRes[0], llRes[1], qp)
-        yuv2img(ffmpeg, seqName, llRes[0], llRes[1], qp, LL)
+        yuv2img(
+            ffmpeg,
+            llRes[0],
+            llRes[1],
+            getYuvPath(seqName, llRes[0], llRes[1], qp, LL),
+            getImagePattern(seqName, qp, LL),
+        )
         render(rlc40, seqName, qp)
 
     # summary
