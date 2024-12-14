@@ -3,6 +3,7 @@ import os
 import subprocess
 
 import matplotlib.pyplot as plt
+import numpy as np
 from utils import *
 
 LL = 0
@@ -32,7 +33,7 @@ def getYuvPath(seq, width, height, qp: str, type, index=None):
 
     path = f"./data/output/{folderName}/{seq}_{qpStr}_{width}x{height}_300frames_8bit_yuv420.yuv"
     if type == MV and index is not None:
-        path = f"./data/output/{folderName}/{seq}_{qpStr}_{width}x{height}_300frames_8bit_yuv420_{index}.yuv"
+        path = f"./data/output/{folderName}/{seq}_{qpStr}/{seq}_{qpStr}_{width}x{height}_300frames_8bit_yuv420_{index}.yuv"
 
     return path
 
@@ -106,7 +107,6 @@ def render(rlc, seq, qp: str):
             file.write(f"{key}\t{value}\n")
 
     subprocess.run([rlc, f"./config/{seq}/param.cfg"])
-    os.rmdir(f"./data/output/")
 
 
 def decode(decoder, seq, width, height, qp: str):
@@ -115,7 +115,7 @@ def decode(decoder, seq, width, height, qp: str):
             [
                 decoder,
                 "-b",
-                f"./data/input/bitstream/Boys_qp{qp}.bin",
+                f"./data/input/bitstream/{seq}_qp{qp}.bin",
                 "-o",
                 getYuvPath(seq, width, height, qp, LL),
                 "--OutputBitDepth=8",
@@ -126,7 +126,7 @@ def decode(decoder, seq, width, height, qp: str):
 
 
 def summary(ffmpeg, seq, w, h, qps):
-    seqCsvFilePath = f"{seq}.csv"
+    seqCsvFilePath = getCsvFilePath(seq)
     headers = [
         "Sequence Name",
         "QP",
@@ -145,9 +145,13 @@ def summary(ffmpeg, seq, w, h, qps):
 
         for i in range(25):
             index = i + 1
-            img2yuv(ffmpeg, seq, w, h, "base", MV, index)
+            img2yuv(
+                ffmpeg,
+                getImagePattern(seq, "base", MV, index),
+                getYuvPath(seq, w, h, "base", MV, index),
+            )
 
-        for qp in qps[seq]:
+        for qp in qps:
             logfile = f"./data/input/encoder-log/{seq}_qp{qp}.log"
             bitrate, llpsnr_y, llpsnr_u, llpsnr_v = extract_codec_info(logfile)
 
@@ -155,7 +159,11 @@ def summary(ffmpeg, seq, w, h, qps):
 
             for i in range(25):
                 index = i + 1
-                img2yuv(ffmpeg, seq, w, h, qp, MV, index)
+                img2yuv(
+                    ffmpeg,
+                    getImagePattern(seq, qp, MV, index),
+                    getYuvPath(seq, w, h, qp, MV, index),
+                )
 
                 baseYuv = getYuvPath(seq, w, h, "base", MV, index)
                 curQpYuv = getYuvPath(seq, w, h, qp, MV, index)
@@ -200,6 +208,10 @@ def visualize(seq):
         x_data = []
         y_data = []
 
+        for row in csv_data:
+            x_data.append(float(row[2]))  # Bitrate
+            y_data.append(float(row[6]))  # MVPSNR_Y
+
         plt.plot(x_data, y_data, marker="o", linestyle="-", color="b")
 
         x_label = "Bitrate(kbps)"
@@ -210,8 +222,26 @@ def visualize(seq):
         plt.title(seq)
         plt.grid(True)
 
-        plt.savefig(getRDCurvePath(seq))
+        x_min = 0
+        x_max = max(x_data)
+        x_margin = 0.1 * (x_max - x_min)
+        x_max_adjusted = x_max + x_margin
+        plt.xlim(x_min, x_max_adjusted)
 
+        y_min, y_max = min(y_data), max(y_data)
+        y_margin = 0.05 * (y_max - y_min)
+        y_min_adjusted = y_min - y_margin
+        y_max_adjusted = y_max + y_margin
+        plt.ylim(y_min_adjusted, y_max_adjusted)
+        tick_interval = 2
+        yticks = np.arange(
+            np.floor(y_min_adjusted),
+            np.ceil(y_max_adjusted) + tick_interval,
+            tick_interval,
+        )
+        plt.yticks(yticks)
+
+        plt.savefig(getRDCurvePath(seq))
         plt.clf()
 
 
@@ -220,9 +250,9 @@ if __name__ == "__main__":
     rlc40 = "./executable/RLC40"
     decoder = "./executable/DecoderAppStatic"
 
-    seqName = "Boys"
-    # qps = [28, 32, 36, 40, 44, 48]
-    qps = ["48"]
+    seqName = "Boys2"
+    qps = ["28", "32", "36", "40", "44", "48"]
+    # qps = ["48"]
     llRes = [3976, 2956]
     mvRes = [1098, 800]
 
@@ -231,7 +261,7 @@ if __name__ == "__main__":
         ffmpeg,
         llRes[0],
         llRes[1],
-        f"./data/input/raw-yuv/Boys_3976x2956_300frames_8bit_yuv420.yuv",
+        f"./data/input/raw-yuv/Boys2_3976x2956_300frames_8bit_yuv420.yuv",
         getImagePattern(seqName, "base", LL),
     )
     render(rlc40, seqName, "base")
@@ -250,3 +280,4 @@ if __name__ == "__main__":
 
     # summary
     summary(ffmpeg, seqName, mvRes[0], mvRes[1], qps)
+    visualize(seqName)

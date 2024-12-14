@@ -38,10 +38,10 @@ rlc = "./executable/RLC-TSPC-smaller"
 # ]
 # rlc = "./executable/RLC-BoxFuji"
 
-# seqs = [
-#     "NagoyaOrigami",
-# ]
-# rlc = "./executable/RLC-Origami"
+seqs = [
+    "NagoyaOrigami",
+]
+rlc = "./executable/RLC-Origami"
 
 
 # seqs = ["TempleBoatGiantR32", "Boxer-IrishMan-Gladiator"]

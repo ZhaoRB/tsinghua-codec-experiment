@@ -2,6 +2,7 @@ import csv
 import os
 
 import matplotlib.pyplot as plt
+import numpy as np
 from initialize import *
 
 # 定义常量，表示列索引
@@ -54,8 +55,36 @@ def draw_rd_curve(csvFilePath, xType, yType, figurePath):
 
         plt.xlabel(x_label)
         plt.ylabel(y_label)
+        if sequence_name == "Boys":
+            sequence_name = "Boys2"
+        if sequence_name == "NagoyaOrigami":
+            sequence_name = "Origami"
         plt.title(sequence_name)
         plt.grid(True)
+
+        # 自定义横轴范围和刻度
+        x_min = 0  # 强制从 0 开始
+        x_max = max(x_data)
+        x_margin = 0.1 * (x_max - x_min)  # 添加右侧边距
+        x_max_adjusted = x_max + x_margin
+        # 设置横轴范围
+        plt.xlim(x_min, x_max_adjusted)
+
+        # 自定义纵坐标范围和刻度
+        y_min, y_max = min(y_data), max(y_data)
+        y_margin = 0.05 * (y_max - y_min)  # 添加上下边距，避免曲线贴边
+        y_min_adjusted = y_min - y_margin
+        y_max_adjusted = y_max + y_margin
+        # 设置纵轴范围
+        plt.ylim(y_min_adjusted, y_max_adjusted)
+        # 设置纵轴刻度为固定间隔
+        tick_interval = 2  # 调整刻度间隔
+        yticks = np.arange(
+            np.floor(y_min_adjusted),
+            np.ceil(y_max_adjusted) + tick_interval,
+            tick_interval,
+        )
+        plt.yticks(yticks)
 
         # 保存图像到指定路径
         figureName = get_figure_name(sequence_name, xType, yType)

@@ -3,7 +3,6 @@ import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from initialize import *
-from tasks.codec import vvc_codec
 from tasks.format_convert import yuv2img
 
 codecLogFile = os.path.join(codecOutputFolder, "yuv2img.log")
@@ -14,7 +13,6 @@ seqs_toConvert = [
     "Motherboard2",
     "Matryoshka",
     "NagoyaFujita",
-    "NagoyaOrigami"
 ]
 qps_toConvert = {
     # subjective + objective
@@ -28,26 +26,13 @@ qps_toConvert = {
     "NagoyaFujita": [36, 40, 44, 48],
 }
 
+
 def run_task(seq, qp):
     print(f"Starting convert for {seq} with QP {qp}...")
     start_time = time.time()  # Record start time
 
     # ========================= start =========================
     width, height = resolutions[seq]
-
-    # codecLogFile = getCodecLogFilePath(seq, qp)
-    # vvc_codec(
-    #     encoder,
-    #     getRawYuvPath(seq),
-    #     getCodecYuvPath(seq, qp),
-    #     os.path.join(configFolder, "vtm_RA.cfg"),
-    #     width,
-    #     height,
-    #     frames,
-    #     qp,
-    #     codecLogFile,
-    #     getBitstreamPath(seq, qp),
-    # )
 
     yuv2img(
         ffmpeg,
