@@ -1,6 +1,5 @@
 import re
 
-
 def if_codec_finish(logFile):
     target_line = "Total Frames |   Bitrate     Y-PSNR    U-PSNR    V-PSNR    YUV-PSNR"
     with open(logFile, "r") as file:
