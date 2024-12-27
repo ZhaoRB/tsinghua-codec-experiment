@@ -2,7 +2,9 @@ import numpy as np
 from common.lvc_config import SeqInfo
 
 
-def cropAndRealign(image: np.ndarray, seq_info: SeqInfo):
+def cropAndRealign(
+    image: np.ndarray, seq_info: SeqInfo
+) -> tuple[np.ndarray, np.ndarray]:
     patch_size = int(round(seq_info.diameter / np.sqrt(2)))
     if patch_size % 2 == 1:
         patch_size += 1

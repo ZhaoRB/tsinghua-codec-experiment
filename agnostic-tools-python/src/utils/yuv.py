@@ -1,6 +1,7 @@
 import numpy as np
 
 
+# return yuv numpy array: shape = (frames, height, width, channel)
 def read_yuv420(filename, width, height, frames):
     # YUV420 格式的字节数
     frame_size = width * height * 3 // 2  # Y + U + V
@@ -43,26 +44,20 @@ def read_yuv420(filename, width, height, frames):
             v_resized[i * 2 : i * 2 + 2, j * 2 : j * 2 + 2, :] = v_data[i, j, :]
 
     # 合并 Y, U, V 数据
-    yuv = np.stack(
-        [y_data, u_resized, v_resized], axis=-1
-    )  # shape = (height, width, 3, frames)
-    yuv = np.moveaxis(yuv, -1, 0)  # shape = (frames, height, width, 3)
-
-    print(yuv.shape)
+    yuv = np.stack([y_data, u_resized, v_resized], axis=-1)
+    yuv = np.moveaxis(yuv, -2, 0)
 
     return yuv
 
 
 def write_yuv420(filename, yuv, width, height):
     # 获取帧数
-    frames = yuv.shape[3]
-
-    print(frames)
+    frames = yuv.shape[0]
 
     # 提取 Y、U、V 通道
-    y_data = yuv[0, :, :, :]
-    u_data = yuv[1, :, :, :]
-    v_data = yuv[2, :, :, :]
+    y_data = yuv[:, :, :, 0]
+    u_data = yuv[:, :, :, 1]
+    v_data = yuv[:, :, :, 2]
 
     # 将 YUV 分量保存为 YUV420 格式
     frame_size = width * height * 3 // 2  # 每帧的字节数
@@ -71,11 +66,11 @@ def write_yuv420(filename, yuv, width, height):
     with open(filename, "wb") as f:
         for frame_idx in range(frames):
             # 计算每一帧的 Y、U、V 数据
-            y_frame = y_data[:, :, frame_idx].reshape((height, width))
-            u_frame = u_data[::2, ::2, frame_idx].reshape(
+            y_frame = y_data[frame_idx, :, :].reshape((height, width))
+            u_frame = u_data[frame_idx, ::2, ::2].reshape(
                 (height // 2, width // 2)
             )  # 下采样 U 通道
-            v_frame = v_data[::2, ::2, frame_idx].reshape(
+            v_frame = v_data[frame_idx, ::2, ::2].reshape(
                 (height // 2, width // 2)
             )  # 下采样 V 通道
 
