@@ -23,6 +23,7 @@ encoder = "./executable/EncoderAppStatic"
 config = "./config/vtm_RA.cfg"
 qp1 = 40
 qp2 = 48
+
 vvc_codec(encoder, main_input, main_output, config, 3250, 2050, 300, qp1, main_log)
 vvc_codec(
     encoder, back_row_input, back_row_output, config, 3250, 906, 300, qp2, back_row_log

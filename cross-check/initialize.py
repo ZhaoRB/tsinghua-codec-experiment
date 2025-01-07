@@ -276,27 +276,3 @@ def getSummaryTempQpYuv(seq, qp, index):
 def getSeqCsvFileName(seq):
     return os.path.join(summaryOutputFolder, f"{seq}_summary.csv")
 
-
-# all_seqs = [
-#     "Boys",
-#     "HandTools",
-#     "MiniGarden2",
-#     "Motherboard2",
-#     "Matryoshka",
-#     "NagoyaFujita",
-#     "NagoyaOrigami",
-# ]
-
-# all_qps = {
-#     "Boys": [36, 40, 44, 48, 52],
-#     "HandTools": [34, 38, 42, 46, 50, 54],
-#     "MiniGarden2": [34, 38, 42, 46, 50, 54],
-#     "Motherboard2": [34, 38, 42, 46, 50, 54],
-#     "Matryoshka": [40, 44, 48, 52, 56, 60],
-#     "NagoyaFujita": [32, 36, 40, 44, 48, 52],
-#     "NagoyaOrigami": [24, 28, 32, 36, 40, 44, 48, 52],
-#     # "Boxer-IrishMan-Gladiator": [32, 36, 40, 44, 48, 52],
-# }
-
-
-# =================== visualize =================

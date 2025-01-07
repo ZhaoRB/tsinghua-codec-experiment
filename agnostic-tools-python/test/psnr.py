@@ -1,4 +1,5 @@
 import subprocess
+import os
 
 
 def compute_psnr_for_yuv(file1, file2, width, height):
@@ -47,3 +48,15 @@ def compute_psnr_for_yuv(file1, file2, width, height):
         raise ValueError("Failed to calculate PSNR values from ffmpeg output.")
 
     return psnr_y, psnr_u, psnr_v
+
+
+
+if __name__ == "__main__":
+    basePath = "/home/zrb/project/tsinghua-codec-experiment/agnostic-tools-python"
+    file1 = os.path.join(basePath, "./data/raw/Boys.yuv")
+    file2 = os.path.join(basePath, "./data/postproc/Boys_3976x2956_merged.yuv")
+    # file2 = os.path.join(basePath, "./data/raw/Boys_output.yuv")
+    psnr_y, psnr_u, psnr_v = compute_psnr_for_yuv(file1, file2, 3976, 2956)
+    print(f"PSNR (Y): {psnr_y}")
+    print(f"PSNR (U): {psnr_u}")
+    print(f"PSNR (V): {psnr_v}")
