@@ -18,8 +18,6 @@ rlc = "./executable/RLC40"
 
 inputFolder = "/workspace/zrb/data/MPEG148-Sequences"  # 输入文件夹路径
 outputFolder = "/workspace/zrb/data/mpeg148-anchor"  # 输出文件夹路径
-inputFolder = "/workspace/zrb/data/new-mpeg148-sequences"  # 输入文件夹路径
-# outputFolder = "/workspace/zrb/data/test"  # 输出文件夹路径
 os.makedirs(outputFolder, exist_ok=True)
 
 configFolder = "./config"
@@ -33,83 +31,60 @@ seqs = [
 ]
 rlc = "./executable/RLC-TSPC-smaller"
 
-# seqs = [
-#     "NagoyaFujita",
-# ]
-# rlc = "./executable/RLC-BoxFuji"
-
-seqs = [
-    "NagoyaOrigami",
-]
-rlc = "./executable/RLC-Origami"
-
-
-# seqs = ["TempleBoatGiantR32", "Boxer-IrishMan-Gladiator"]
-
 qps = {
-    # subjective + objective
-    "Boys": [28, 32, 36, 40, 44, 48],
+    "Boys2": [28, 32, 36, 40, 44, 48],
     "HandTools": [34, 38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
     "Motherboard2": [30, 34, 38, 42, 46, 50],
-    "NagoyaOrigami": [28, 32, 36, 40, 44, 48],
-    # objective
+    "Origami": [28, 32, 36, 40, 44, 48],
     "Matryoshka": [40, 44, 48, 52],
-    "NagoyaFujita": [36, 40, 44, 48],
-    "TempleBoatGiantR32": [36, 40, 44, 48],
-    "Boxer-IrishMan-Gladiator": [36, 40, 44, 48],
+    "Fujita2": [36, 40, 44, 48],
 }
 
 # ===================== you only need to adjust the parameters above =================
 
 all_seqs = [
-    "Boys",
+    "Boys2",
     "HandTools",
     "MiniGarden2",
     "Motherboard2",
-    "NagoyaOrigami",
+    "Origami",
     "Matryoshka",
-    "NagoyaFujita",
+    "Fujita2",
 ]
 
 all_qps = {
-    "Boys": [28, 32, 36, 40, 44, 48],
+    "Boys2": [28, 32, 36, 40, 44, 48],
     "HandTools": [34, 38, 42, 46, 50, 54],
     "MiniGarden2": [34, 38, 42, 46, 50, 54],
     "Motherboard2": [30, 34, 38, 42, 46, 50],
-    "NagoyaOrigami": [28, 32, 36, 40, 44, 48],
+    "Origami": [28, 32, 36, 40, 44, 48],
     # Matryoshka & Fujita only for objective test
     "Matryoshka": [40, 44, 48, 52],
-    "NagoyaFujita": [36, 40, 44, 48],
+    "Fujita2": [36, 40, 44, 48],
 }
 
 
-# resolutions
 resolutions = {
     "Boys": [3976, 2956],
     "HandTools": [4036, 3064],
     "Motherboard2": [4036, 3064],
     "MiniGarden2": [4036, 3064],
     "Matryoshka": [4040, 3064],
-    "NagoyaFujita": [2048, 2048],
-    "NagoyaOrigami": [2048, 2048],
+    "Fujita2": [2048, 2048],
+    "Origami": [2048, 2048],
     "Boxer-IrishMan-Gladiator": [3840, 2160],
     "TempleBoatGiantR32": [6464, 4852],
 }
 
 rendered_resolutions = {
-    # "Boys": [1348, 980],
     "Boys": [1098, 800],
-    # "HandTools": [1370, 1004],
     "HandTools": [1116, 820],
-    # "Motherboard2": [1370, 1004],
     "Motherboard2": [1116, 820],
-    # "MiniGarden2": [1370, 1004],
     "MiniGarden2": [1116, 820],
-    # "Matryoshka": [1370, 1004],
     "Matryoshka": [1116, 820],
-    "NagoyaFujita": [740, 732],
-    "NagoyaOrigami": [706, 692],
+    "Fujita2": [740, 732],
+    "Origami": [706, 692],
     "Boxer-IrishMan-Gladiator": [1338, 746],
 }
 
