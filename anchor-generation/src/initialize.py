@@ -9,18 +9,21 @@ startFrame = 0  # 起始帧
 viewNum = 5  # 渲染出的视角数
 centerImageToConvert = "image_013.png"  # 中心视角图片名
 
+# executable
+scriptBasePath = "/workspace/zrb/data/tsinghua-codec-experiment/anchor-generation"
+encoder = os.path.join(scriptBasePath, "./executable/EncoderAppStatic")
+ffmpeg = os.path.join(scriptBasePath, "./executable/ffmpeg")
+rlc = os.path.join(scriptBasePath, "./executable/RLC40")
+
+# configuration files
+configFolder = os.path.join(scriptBasePath, "./config")
+vvcCfgFile = os.path.join(configFolder, "encoder_randomaccess_vtm.cfg")
 paramFileName = "param.cfg"
 calibFileName = "calib.xml"
-
-encoder = "./executable/EncoderAppStatic"
-ffmpeg = "./executable/ffmpeg"
-rlc = "./executable/RLC40"
 
 inputFolder = "/workspace/zrb/data/MPEG148-Sequences"  # 输入文件夹路径
 outputFolder = "/workspace/zrb/data/mpeg148-anchor"  # 输出文件夹路径
 os.makedirs(outputFolder, exist_ok=True)
-
-configFolder = "./config"
 
 seqs = [
     "Boys",
@@ -29,7 +32,6 @@ seqs = [
     "Motherboard2",
     "Matryoshka",
 ]
-rlc = "./executable/RLC-TSPC-smaller"
 
 qps = {
     "Boys2": [28, 32, 36, 40, 44, 48],
@@ -112,6 +114,11 @@ os.makedirs(codecOutputFolder, exist_ok=True)
 
 codecBitstreamFolder = os.path.join(outputFolder, "codec-bitstream")
 os.makedirs(codecBitstreamFolder, exist_ok=True)
+
+
+# per sequence config
+def getCodecPerSeqCfg(seq):
+    return os.path.join(configFolder, seq, f"./{seq}.cfg")
 
 
 # codec output
@@ -197,8 +204,8 @@ def getBaseRenderLogFilePath(seq):
 
 
 # =================== render subjective =================
-renderSubjectiveOutputFolder = "../../render-subjective"
-os.makedirs(os.path.join(outputFolder, "./render-subjective"), exist_ok=True)
+renderSubjectiveOutputFolder = os.path.join(outputFolder, "./render-subjective")
+os.makedirs(renderSubjectiveOutputFolder, exist_ok=True)
 
 
 def getSubjectiveInputPattern(seq, qp):
@@ -215,8 +222,10 @@ def getSubjectiveRenderYuvPath(seq, qp):
 
 
 # =================== render subjective base =================
-renderSubjectiveBaseOutputFolder = "../../render-subjective-base"
-os.makedirs(os.path.join(outputFolder, "./render-subjective-base"), exist_ok=True)
+renderSubjectiveBaseOutputFolder = os.path.join(
+    outputFolder, "./render-subjective-base"
+)
+os.makedirs(renderSubjectiveBaseOutputFolder, exist_ok=True)
 
 
 def getSubjectiveBaseInputPattern(seq):
@@ -250,4 +259,3 @@ def getSummaryTempQpYuv(seq, qp, index):
 
 def getSeqCsvFileName(seq):
     return os.path.join(summaryOutputFolder, f"{seq}_summary.csv")
-

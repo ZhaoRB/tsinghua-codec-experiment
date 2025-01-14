@@ -16,7 +16,7 @@ def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath):
     )
 
     try:
-        with open(logFilePath, "a") as logFile:
+        with open(logFilePath, "w") as logFile:
             subprocess.run(
                 [
                     ffmpeg,
