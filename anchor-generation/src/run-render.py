@@ -1,9 +1,7 @@
-import os
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from initialize import *
-from tasks.format_convert import img2yuv
 from tasks.render import rlc_render
 
 
@@ -12,7 +10,6 @@ def run_task(seq, qp):
     start_time = time.time()  # Record start time
 
     # ========================= start =========================
-    # 3. rlc render
     rlc_cfg_path, calib_path = getRenderConfigPath(seq)
     renderLogFile = getRenderLogFilePath(seq, qp)
 
@@ -27,17 +24,6 @@ def run_task(seq, qp):
         viewNum,
         renderLogFile,
     )
-
-    # 4. render result, img2yuv
-    img2yuv(
-        ffmpeg,
-        startFrame,
-        frames,
-        os.path.join(getRenderFramePattern(seq, qp), centerImageToConvert),
-        getRenderYuvPath(seq, qp),
-        renderLogFile,
-    )
-
     # ========================= end =========================
 
     end_time = time.time()  # Record end time

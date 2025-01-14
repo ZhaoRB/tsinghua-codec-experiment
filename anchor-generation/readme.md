@@ -2,31 +2,33 @@
 1. 修改 initialize.py 中的配置
    ```python
    max_workers = 32  # run-xxx.py 脚本执行的最大进程数
+   frames = 300  # 要处理（如codec，render）的帧数，一般为300
+   viewNum = 5  # 渲染出的视角数，对于anchor generation应该为5
 
    inputFolder = "/workspace/zrb/data/MPEG148-Sequences" # 输入文件夹路径
    outputFolder = "/workspace/zrb/data/mpeg148-anchor" # 输出文件夹路径
 
     # 序列名称
     seqs = [
-        "Boys",
-        "HandTools",
-        "MiniGarden2",
-        "Motherboard2",
-        "NagoyaOrigami",
-        "Matryoshka",
-        "NagoyaFujita",
+      "Boys2",
+      "HandTools",
+      "MiniGarden2",
+      "Motherboard2",
+      "Origami",
+      "Matryoshka",
+      "Fujita2",
     ]
 
     # qp点
     qps = {
-        "Boys": [28, 32, 36, 40, 44, 48],
-        "HandTools": [34, 38, 42, 46, 50, 54],
-        "MiniGarden2": [34, 38, 42, 46, 50, 54],
-        "Motherboard2": [30, 34, 38, 42, 46, 50],
-        "NagoyaOrigami": [28, 32, 36, 40, 44, 48],
-        "Matryoshka": [40, 44, 48, 52],
-        "NagoyaFujita": [36, 40, 44, 48],
-    }
+      "Boys2": [28, 32, 36, 40, 44, 48],
+      "HandTools": [34, 38, 42, 46, 50, 54],
+      "MiniGarden2": [34, 38, 42, 46, 50, 54],
+      "Motherboard2": [30, 34, 38, 42, 46, 50],
+      "Origami": [28, 32, 36, 40, 44, 48],
+      "Matryoshka": [40, 44, 48, 52],
+      "Fujita2": [36, 40, 44, 48],
+   }
    ```
 2. 此次 cross-check 需要测试的左右所有序列 & qp点，见 `initialize.py` 中的 `all_seqs` 和 `all_qps`
 3. 运行脚本：

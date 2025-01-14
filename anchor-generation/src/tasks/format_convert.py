@@ -1,13 +1,19 @@
 import logging
 import subprocess
+import sys
 
 
-def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath):
-    # Configure logging to write to logfilePath
+def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath=None):
+    # Configure logging
+    log_handler = (
+        logging.StreamHandler()
+        if logFilePath is None
+        else logging.FileHandler(logFilePath)
+    )
     logging.basicConfig(
-        filename=logFilePath,
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[log_handler],
     )
 
     # Log the start of the task
@@ -16,24 +22,24 @@ def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath):
     )
 
     try:
-        with open(logFilePath, "w") as logFile:
-            subprocess.run(
-                [
-                    ffmpeg,
-                    "-start_number",
-                    str(startFrame),
-                    "-i",
-                    input_images,
-                    "-vf",
-                    "format=yuv420p",
-                    "-frames:v",
-                    str(frames),
-                    output_yuv,
-                    "-y",
-                ],
-                stdout=logFile,
-                stderr=subprocess.STDOUT,
-            )
+        logFile = open(logFilePath, "w") if logFilePath else sys.stdout
+        subprocess.run(
+            [
+                ffmpeg,
+                "-start_number",
+                str(startFrame),
+                "-i",
+                input_images,
+                "-vf",
+                "format=yuv420p",
+                "-frames:v",
+                str(frames),
+                output_yuv,
+                "-y",
+            ],
+            stdout=logFile,
+            stderr=subprocess.STDOUT,
+        )
 
         # Log the successful completion of the task
         logging.info(
@@ -47,12 +53,17 @@ def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath):
         )
 
 
-def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath):
-    # Configure logging to write to logfilePath
+def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath=None):
+    # Configure logging
+    log_handler = (
+        logging.StreamHandler()
+        if logFilePath is None
+        else logging.FileHandler(logFilePath)
+    )
     logging.basicConfig(
-        filename=logFilePath,
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
+        handlers=[log_handler],
     )
 
     # Log the start of the task
@@ -61,24 +72,24 @@ def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath):
     )
 
     try:
-        with open(logFilePath, "a") as logFile:
-            subprocess.run(
-                [
-                    ffmpeg,
-                    "-s",
-                    f"{width}x{height}",
-                    "-pix_fmt",
-                    "yuv420p",
-                    "-i",
-                    input_yuv,
-                    "-start_number",
-                    "0",
-                    output_images,
-                    "-y",
-                ],
-                stdout=logFile,
-                stderr=subprocess.STDOUT,
-            )
+        logFile = open(logFilePath, "w") if logFilePath else sys.stdout
+        subprocess.run(
+            [
+                ffmpeg,
+                "-s",
+                f"{width}x{height}",
+                "-pix_fmt",
+                "yuv420p",
+                "-i",
+                input_yuv,
+                "-start_number",
+                "0",
+                output_images,
+                "-y",
+            ],
+            stdout=logFile,
+            stderr=subprocess.STDOUT,
+        )
 
         # Log the successful completion of the task
         logging.info(
@@ -90,7 +101,3 @@ def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath):
         logging.error(
             f"[LVC TEST]: yuv2img failed for input: {input_yuv}. Error: {str(e)}\n\n"
         )
-
-
-def img2yuv_subjective():
-    pass

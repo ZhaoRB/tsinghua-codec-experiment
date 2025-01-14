@@ -62,6 +62,7 @@ def rlc_render(
     hash_suffix = hashlib.md5(
         f"{configFile}{inputImages}{startFrame}".encode()
     ).hexdigest()
+    os.makedirs("./temp", exist_ok=True)
     tempConfigFile = f"./temp/param_{hash_suffix}.cfg"
 
     try:

@@ -34,7 +34,6 @@ def run_task(seq, qp):
         getCodecImagePattern(seq, qp),
         codecLogFile,
     )
-
     # ========================= end =========================
 
     end_time = time.time()  # Record end time

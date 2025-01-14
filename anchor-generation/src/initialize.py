@@ -3,14 +3,21 @@ import os
 # =================== parameters =================
 max_workers = 48  # run-xxx.py 脚本执行的最大进程数
 
-frames = 300  # 要处理（如codec，render）的帧数
+frames = 10  # 要处理（如codec，render）的帧数
 startFrame = 0  # 起始帧
 
 viewNum = 5  # 渲染出的视角数
 centerImageToConvert = "image_013.png"  # 中心视角图片名
 
+scriptBasePath = "/workspace/share/tsinghua-codec-experiment/anchor-generation" # 脚本所在路径
+inputFolder = "/workspace/share/lvc-raw-sequences"  # 输入文件夹路径
+outputFolder = "/workspace/share/cmcc-anchor-test"  # 输出文件夹路径
+# scriptBasePath = "/workspace/zrb/data/tsinghua-codec-experiment/anchor-generation"
+# inputFolder = "/workspace/zrb/data/lvc-raw-sequences"  # 输入文件夹路径
+# outputFolder = "/workspace/zrb/data/cmcc-anchor-test"  # 输出文件夹路径
+os.makedirs(outputFolder, exist_ok=True)
+
 # executable
-scriptBasePath = "/workspace/zrb/data/tsinghua-codec-experiment/anchor-generation"
 encoder = os.path.join(scriptBasePath, "./executable/EncoderAppStatic")
 ffmpeg = os.path.join(scriptBasePath, "./executable/ffmpeg")
 rlc = os.path.join(scriptBasePath, "./executable/RLC40")
@@ -21,16 +28,15 @@ vvcCfgFile = os.path.join(configFolder, "encoder_randomaccess_vtm.cfg")
 paramFileName = "param.cfg"
 calibFileName = "calib.xml"
 
-inputFolder = "/workspace/zrb/data/MPEG148-Sequences"  # 输入文件夹路径
-outputFolder = "/workspace/zrb/data/mpeg148-anchor"  # 输出文件夹路径
-os.makedirs(outputFolder, exist_ok=True)
 
 seqs = [
-    "Boys",
+    "Boys2",
     "HandTools",
     "MiniGarden2",
     "Motherboard2",
     "Matryoshka",
+    "Origami",
+    "Fujita2",
 ]
 
 qps = {
@@ -41,6 +47,12 @@ qps = {
     "Origami": [28, 32, 36, 40, 44, 48],
     "Matryoshka": [40, 44, 48, 52],
     "Fujita2": [36, 40, 44, 48],
+}
+
+seqs = ["HandTools", "MiniGarden2"]
+qps = {
+    "HandTools": [50, 54],
+    "MiniGarden2": [50, 54],
 }
 
 # ===================== you only need to adjust the parameters above =================
@@ -103,6 +115,8 @@ def getRawYuvPath(seq):
         f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_300frames_8bit_yuv420.yuv",
     )
 
+def getRawImageFolder(seq):
+    return os.path.join(inputFolder, seq)
 
 def getRawImagePattern(seq):
     return os.path.join(inputFolder, seq, imagePattern)
