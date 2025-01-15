@@ -144,7 +144,7 @@ def getCodecYuvPath(seq, qp):
 
 
 def getBitstreamPath(seq, qp):
-    return os.path.join(codecBitstreamFolder, f"{seq}_qp{qp}_bitstream")
+    return os.path.join(codecBitstreamFolder, f"{seq}_qp{qp}.bin")
 
 
 # yuv2img after codec
