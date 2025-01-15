@@ -3,7 +3,7 @@ import os
 # =================== parameters =================
 max_workers = 48  # run-xxx.py 脚本执行的最大进程数
 
-frames = 10  # 要处理（如codec，render）的帧数
+frames = 300  # 要处理（如codec，render）的帧数
 startFrame = 0  # 起始帧
 
 viewNum = 5  # 渲染出的视角数
