@@ -2,8 +2,8 @@ import os
 import re
 
 # 配置文件夹路径
-input_folder = '/workspace/zrb/data/lvc-raw-sequences'
-output_folder = '/workspace/zrb/data/lvc-raw-sequences-30frames'
+input_folder = '/home/data/lvc-raw-sequences'
+output_folder = '/home/data/lvc-raw-sequences-30frames'
 
 # 创建输出文件夹（如果不存在）
 os.makedirs(output_folder, exist_ok=True)

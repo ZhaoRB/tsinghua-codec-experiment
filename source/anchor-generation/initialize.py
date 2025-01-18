@@ -1,9 +1,9 @@
 import os
 
 # =================== parameters =================
-max_workers = 48  # run-xxx.py 脚本执行的最大进程数
+max_workers = 12  # run-xxx.py 脚本执行的最大进程数
 
-frames = 300  # 要处理（如codec，render）的帧数
+frames = 30  # 要处理（如codec，render）的帧数
 startFrame = 0  # 起始帧
 
 viewNum = 5  # 渲染出的视角数
@@ -12,9 +12,9 @@ centerImageToConvert = "image_013.png"  # 中心视角图片名
 scriptBasePath = "/workspace/share/tsinghua-codec-experiment/anchor-generation" # 脚本所在路径
 inputFolder = "/workspace/share/lvc-raw-sequences"  # 输入文件夹路径
 outputFolder = "/workspace/share/cmcc-anchor-test"  # 输出文件夹路径
-# scriptBasePath = "/workspace/zrb/data/tsinghua-codec-experiment/anchor-generation"
-# inputFolder = "/workspace/zrb/data/lvc-raw-sequences"  # 输入文件夹路径
-# outputFolder = "/workspace/zrb/data/cmcc-anchor-test"  # 输出文件夹路径
+scriptBasePath = "/home/zrb/project/tsinghua-codec-experiment/anchor-generation"
+inputFolder = "/home/data/lvc-raw-sequences-30frames"  # 输入文件夹路径
+outputFolder = "/home/data/anchor-test-30frames"  # 输出文件夹路径
 os.makedirs(outputFolder, exist_ok=True)
 
 # executable
@@ -31,12 +31,12 @@ calibFileName = "calib.xml"
 
 seqs = [
     "Boys2",
-    "HandTools",
-    "MiniGarden2",
-    "Motherboard2",
-    "Matryoshka",
-    "Origami",
-    "Fujita2",
+    # "HandTools",
+    # "MiniGarden2",
+    # "Motherboard2",
+    # "Matryoshka",
+    # "Origami",
+    # "Fujita2",
 ]
 
 qps = {
@@ -47,12 +47,6 @@ qps = {
     "Origami": [28, 32, 36, 40, 44, 48],
     "Matryoshka": [40, 44, 48, 52],
     "Fujita2": [36, 40, 44, 48],
-}
-
-seqs = ["HandTools", "MiniGarden2"]
-qps = {
-    "HandTools": [50, 54],
-    "MiniGarden2": [50, 54],
 }
 
 # ===================== you only need to adjust the parameters above =================
@@ -80,26 +74,26 @@ all_qps = {
 
 
 resolutions = {
-    "Boys": [3976, 2956],
+    "Boys2": [3976, 2956],
     "HandTools": [4036, 3064],
     "Motherboard2": [4036, 3064],
     "MiniGarden2": [4036, 3064],
     "Matryoshka": [4040, 3064],
     "Fujita2": [2048, 2048],
     "Origami": [2048, 2048],
-    "Boxer-IrishMan-Gladiator": [3840, 2160],
+    "Boxer-IrishMan-Gladiator2": [3840, 2160],
     "TempleBoatGiantR32": [6464, 4852],
 }
 
 rendered_resolutions = {
-    "Boys": [1098, 800],
+    "Boys2": [1098, 800],
     "HandTools": [1116, 820],
     "Motherboard2": [1116, 820],
     "MiniGarden2": [1116, 820],
     "Matryoshka": [1116, 820],
     "Fujita2": [740, 732],
     "Origami": [706, 692],
-    "Boxer-IrishMan-Gladiator": [1338, 746],
+    "Boxer-IrishMan-Gladiator2": [1338, 746],
 }
 
 # =================== set file names and make dirs =================
@@ -112,7 +106,7 @@ renderedImagePattern = "image_%03d.png"
 def getRawYuvPath(seq):
     return os.path.join(
         inputFolder,
-        f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_300frames_8bit_yuv420.yuv",
+        f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_30frames_8bit_yuv420.yuv",
     )
 
 def getRawImageFolder(seq):
