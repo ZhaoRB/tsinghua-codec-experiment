@@ -3,27 +3,29 @@ import os
 # =================== parameters =================
 max_workers = 12  # run-xxx.py 脚本执行的最大进程数
 
-frames = 30  # 要处理（如codec，render）的帧数
+frames = 300  # 要处理（如codec，render）的帧数
 startFrame = 0  # 起始帧
 
 viewNum = 5  # 渲染出的视角数
 centerImageToConvert = "image_013.png"  # 中心视角图片名
 
-scriptBasePath = "/workspace/share/tsinghua-codec-experiment/anchor-generation" # 脚本所在路径
-inputFolder = "/workspace/share/lvc-raw-sequences"  # 输入文件夹路径
-outputFolder = "/workspace/share/cmcc-anchor-test"  # 输出文件夹路径
-scriptBasePath = "/home/zrb/project/tsinghua-codec-experiment/anchor-generation"
-inputFolder = "/home/data/lvc-raw-sequences-30frames"  # 输入文件夹路径
-outputFolder = "/home/data/anchor-test-30frames"  # 输出文件夹路径
+scriptBasePath = "/workspace/zrb/data/tsinghua-codec-experiment/source/anchor-generation"  # 脚本所在路径
+inputFolder = "/workspace/zrb/data/lvc-raw-sequences"  # 输入文件夹路径
+
+outputFolder = "/workspace/zrb/data/mpeg149-anchor-check/"  # china mobile cc
+outputFolder = "/workspace/zrb/data/mpeg149-anchor-update/"  # mpeg149 update qp
+# outputFolder = "/data/mpeg149-update-qp/"
+
 os.makedirs(outputFolder, exist_ok=True)
 
-# executable
-encoder = os.path.join(scriptBasePath, "./executable/EncoderAppStatic")
-ffmpeg = os.path.join(scriptBasePath, "./executable/ffmpeg")
-rlc = os.path.join(scriptBasePath, "./executable/RLC40")
+# executable files
+executableBasePath = "/workspace/zrb/data/tsinghua-codec-experiment/executable"
+encoder = os.path.join(executableBasePath, "./EncoderAppStatic")
+ffmpeg = os.path.join(executableBasePath, "./ffmpeg")
+rlc = os.path.join(executableBasePath, "./RLC40")
 
 # configuration files
-configFolder = os.path.join(scriptBasePath, "./config")
+configFolder = "/workspace/zrb/data/tsinghua-codec-experiment/config"
 vvcCfgFile = os.path.join(configFolder, "encoder_randomaccess_vtm.cfg")
 paramFileName = "param.cfg"
 calibFileName = "calib.xml"
@@ -31,12 +33,14 @@ calibFileName = "calib.xml"
 
 seqs = [
     "Boys2",
-    # "HandTools",
-    # "MiniGarden2",
-    # "Motherboard2",
-    # "Matryoshka",
-    # "Origami",
-    # "Fujita2",
+    "HandTools",
+    "MiniGarden2",
+    "Motherboard2",
+    "Matryoshka",
+    "Origami",
+    "Fujita2",
+    "Boxer-IrishMan-Gladiator2",
+    "TempleBoatGiantR32",
 ]
 
 qps = {
@@ -49,6 +53,34 @@ qps = {
     "Fujita2": [36, 40, 44, 48],
 }
 
+
+# china mobile cc
+seqs = ["HandTools", "Motherboard2"]
+qps = {
+    "HandTools": [34, 54],  # 这两个是因为对不上
+    "Motherboard2": [34],  # qp34 小数点后第二位对不上
+}
+
+# seqs = ["MiniGarden2"]
+# qps = {
+#     "MiniGarden2": [40], # 这两个是因为对不上
+# }
+
+# # mpeg149 mathias update
+seqs = ["HandTools", "MiniGarden2", "Motherboard2"]
+qps = {
+    "HandTools": [41],
+    "MiniGarden2": [40],
+    "Motherboard2": [39],
+}
+# seqs = ["HandTools", "Motherboard2", "MiniGarden2"]
+# qps = {
+#     "HandTools": [41],
+#     "MiniGarden2": [40],
+#     "Motherboard2": [39],
+# }
+
+
 # ===================== you only need to adjust the parameters above =================
 
 all_seqs = [
@@ -59,6 +91,8 @@ all_seqs = [
     "Origami",
     "Matryoshka",
     "Fujita2",
+    "Boxer-IrishMan-Gladiator2",
+    "TempleBoatGiantR32",
 ]
 
 all_qps = {
@@ -106,11 +140,13 @@ renderedImagePattern = "image_%03d.png"
 def getRawYuvPath(seq):
     return os.path.join(
         inputFolder,
-        f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_30frames_8bit_yuv420.yuv",
+        f"{seq}_{resolutions[seq][0]}x{resolutions[seq][1]}_300frames_8bit_yuv420.yuv",
     )
+
 
 def getRawImageFolder(seq):
     return os.path.join(inputFolder, seq)
+
 
 def getRawImagePattern(seq):
     return os.path.join(inputFolder, seq, imagePattern)

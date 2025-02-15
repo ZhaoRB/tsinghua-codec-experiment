@@ -28,7 +28,7 @@ def vvc_codec(
     )
 
     try:
-        with open(logfilePath, "a") as logfile:
+        with open(logfilePath, "w") as logfile:
             subprocess.run(
                 [
                     Encoder,

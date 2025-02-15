@@ -22,7 +22,7 @@ def img2yuv(ffmpeg, startFrame, frames, input_images, output_yuv, logFilePath=No
     )
 
     try:
-        logFile = open(logFilePath, "w") if logFilePath else sys.stdout
+        logFile = open(logFilePath, "a") if logFilePath else sys.stdout
         subprocess.run(
             [
                 ffmpeg,
@@ -72,7 +72,7 @@ def yuv2img(ffmpeg, width, height, input_yuv, output_images, logFilePath=None):
     )
 
     try:
-        logFile = open(logFilePath, "w") if logFilePath else sys.stdout
+        logFile = open(logFilePath, "a") if logFilePath else sys.stdout
         subprocess.run(
             [
                 ffmpeg,

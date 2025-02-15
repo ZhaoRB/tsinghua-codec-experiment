@@ -11,10 +11,10 @@ summaryLogFile = os.path.join(summaryOutputFolder, "summary.log")
 headers = [
     "Sequence Name",
     "QP",
-    "Bitrate",
-    "LLPSNR_Y",
-    "LLPSNR_U",
-    "LLPSNR_V",
+    # "Bitrate",
+    # "LLPSNR_Y",
+    # "LLPSNR_U",
+    # "LLPSNR_V",
     "MVPSNR_Y",
     "MVPSNR_U",
     "MVPSNR_V",
@@ -44,14 +44,14 @@ def run_summary(seq):
         for qp in qps[seq]:
             print(f"Start summary for {seq} QP {qp}...")
             
-            # 1. get bitrate and llpsnr from vvc logfile
-            logfile = os.path.join(codecOutputFolder, f"{seq}_qp{qp}.log")
+            # # 1. get bitrate and llpsnr from vvc logfile
+            # logfile = os.path.join(codecOutputFolder, f"{seq}_qp{qp}.log")
 
-            # check if log file exists and if codec finished
-            if not os.path.exists(logfile) or not if_codec_finish(logfile):
-                continue
+            # # check if log file exists and if codec finished
+            # if not os.path.exists(logfile) or not if_codec_finish(logfile):
+            #     continue
 
-            bitrate, llpsnr_y, llpsnr_u, llpsnr_v = extract_codec_info(logfile)
+            # bitrate, llpsnr_y, llpsnr_u, llpsnr_v = extract_codec_info(logfile)
 
             # 2. calculate mvpsnr from all view points
             mvpsnr_y, mvpsnr_u, mvpsnr_v = [], [], []
@@ -94,15 +94,24 @@ def run_summary(seq):
                 [
                     seq,
                     qp,
-                    bitrate,
-                    llpsnr_y,
-                    llpsnr_u,
-                    llpsnr_v,
+                    # bitrate,
+                    # llpsnr_y,
+                    # llpsnr_u,
+                    # llpsnr_v,
                     avg_mvpsnr_y,
                     avg_mvpsnr_u,
                     avg_mvpsnr_v,
                 ]
             )
+
+            # delete temp yuv files
+        #     for i in range(viewNum * viewNum):
+        #         index = i + 1
+        #         os.remove(getSummaryTempQpYuv(seq, qp, index))
+
+        # for i in range(viewNum * viewNum):
+        #     index = i + 1
+        #     os.remove(getSummaryTempBaseYuv(seq, index))
 
 
 def mergeAllCsvFiles():
